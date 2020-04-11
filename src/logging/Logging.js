@@ -8,9 +8,9 @@ class Logging extends React.Component {
   render() {
     return (
       <div>
-        <input value="Login" />
-        <input value="Password" />
-        <button onClick={this.props.handleLogging}>LOGIN</button>
+        <input value={this.props.login} onChange={this.props.handleChangeLogin}/>
+        <input value={this.props.password} onChange={this.props.handleChangePassword}/>
+        <button onClick={this.props.handleLoggingOnClickButton}>LOGIN</button>
 
       </div>
     )
