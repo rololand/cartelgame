@@ -28,7 +28,7 @@ const userSchema = new Schema({
     required: true
   },
   stats: {
-    type: Array,
+    type: Object,
     required: true
   }
 }, {

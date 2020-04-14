@@ -20,7 +20,6 @@ class Game extends React.Component {
 
     this.state = {
       actualGamePageName: "Brief",
-      player: props.player,
     }
   }
 
@@ -32,7 +31,7 @@ class Game extends React.Component {
 
   selectGamePage() {
     if (this.state.actualGamePageName==="Brief") {
-      return <Brief />
+      return <Brief playerId={this.props.playerId}/>
     } else if (this.state.actualGamePageName==="MeetingRoom") {
       return <MeetingRoom />
     } else if (this.state.actualGamePageName==="OpenSpace") {

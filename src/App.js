@@ -22,7 +22,7 @@ class App extends React.Component{
     axios.get(url)
       .then(user => {
         if(user.data.password == this.state.password) {
-          this.player = user.data;
+          this.playerId = user.data._id;
           this.setState({
             isUserLogged: true,
             logErrMsg: ''
@@ -67,7 +67,7 @@ class App extends React.Component{
       <div className="App">
         {this.state.isUserLogged ?
           <Game onClickLogout={this.handleOnClickLogout.bind(this)}
-                player={this.player}/> :
+                playerId={this.playerId}/> :
           <div>
           <Logging  handleLoggingOnClickButton={this.handleLoggingOnClickButton.bind(this)}
                     handleChangeLogin={this.handleChangeLogin.bind(this)}
