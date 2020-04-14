@@ -18,6 +18,7 @@ class GameMenu extends React.Component {
         <div className="menuButtonContainer"><button onClick={() => this.props.onClick("Team")}>Team</button></div>
         <div className="menuButtonContainer"><button onClick={() => this.props.onClick("MailBox")}>MailBox</button></div>
         <div className="menuButtonContainer"><button onClick={() => this.props.onClick("Evaluation")}>Evaluation</button></div>
+        <div className="menuButtonContainer"><button onClick={() => this.props.onClickLogout()}>LogOut</button></div>
       </div>
     )
   }

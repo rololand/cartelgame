@@ -19,12 +19,12 @@ class Game extends React.Component {
     super(props);
 
     this.state = {
-      actualGamePageName: "Brief"
+      actualGamePageName: "Brief",
+      player: props.player,
     }
   }
 
   handleGameMenuClick(name) {
-
     this.setState({
       actualGamePageName: name
     })
@@ -60,7 +60,7 @@ class Game extends React.Component {
     return (
       <div className="gameContainer">
         <div className="GameMenu">
-          <GameMenu onClick={this.handleGameMenuClick.bind(this)}/>
+          <GameMenu onClick={this.handleGameMenuClick.bind(this)} onClickLogout={this.props.onClickLogout.bind(this)}/>
         </div>
         <div className="GamePage">
           {this.selectGamePage()}

@@ -11,7 +11,25 @@ const userSchema = new Schema({
     minlength: 3
   },
   password: {
-    type: String
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  sex: {
+    type: String,
+    required: true
+  },
+  class: {
+    type: String,
+    required: true
+  },
+  stats: {
+    type: Array,
+    required: true
   }
 }, {
   timestamps: true

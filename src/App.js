@@ -2,15 +2,18 @@ import React from 'react';
 import axios from 'axios';
 import './App.css';
 import Logging from './logging/Logging.js'
+import LogErrMsg from './logging/LogErrMsg.js'
 import Game from './game/Game.js'
 
 class App extends React.Component{
   constructor(props) {
     super(props);
+    this.player = {};
     this.state = {
       isUserLogged: false,
       login: "admin",
-      password: "admin"
+      password: "admin",
+      logErrMsg: ''
     }
   }
 
@@ -19,13 +22,23 @@ class App extends React.Component{
     axios.get(url)
       .then(user => {
         if(user.data.password == this.state.password) {
-
+          this.player = user.data;
           this.setState({
-            isUserLogged: true
+            isUserLogged: true,
+            logErrMsg: ''
+          })
+        } else {
+          this.setState({
+            logErrMsg: 'Nieprawidłowe hasło.'
           })
         }
       })
-      .catch(err => console.log('Error: ' + err));
+      .catch(err => {
+        console.log('Error: ' + err);
+        this.setState({
+          logErrMsg: 'Podany login nie istnieje.'
+        })
+      });
   }
 
   handleChangeLogin(event) {
@@ -42,18 +55,28 @@ class App extends React.Component{
     })
   }
 
+  handleOnClickLogout() {
+    this.setState({
+      isUserLogged: false
+    })
+  }
+
   render() {
 
     return (
       <div className="App">
         {this.state.isUserLogged ?
-          <Game /> :
+          <Game onClickLogout={this.handleOnClickLogout.bind(this)}
+                player={this.player}/> :
+          <div>
           <Logging  handleLoggingOnClickButton={this.handleLoggingOnClickButton.bind(this)}
                     handleChangeLogin={this.handleChangeLogin.bind(this)}
                     handleChangePassword={this.handleChangePassword.bind(this)}
                     login={this.state.login}
                     password={this.state.password}
           />
+          <LogErrMsg logErrMsg={this.state.logErrMsg} />
+          </div>
         }
       </div>
     )
