@@ -50,7 +50,7 @@ router.route('/update/:id').post((req, res) => {
       user.sex = req.body.sex;
 
       user.save()
-        .then(() => res.json('User updated!'))
+        .then((user) => res.json(user))
         .catch(err => res.status(400).json('Error:' + err))
     })
     .catch(err => res.status(400).json('Error2: ' + err))

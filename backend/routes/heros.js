@@ -49,7 +49,7 @@ router.route('/update/:id').post((req, res) => {
       hero.stats = req.body.stats;
 
       hero.save()
-        .then(() => res.json('Hero updated!'))
+        .then((hero) => res.json(hero))
         .catch(err => res.status(400).json('Error:' + err))
     })
     .catch(err => res.status(400).json('Error2: ' + err))

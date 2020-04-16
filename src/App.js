@@ -21,7 +21,6 @@ class App extends React.Component{
     const url  = 'http://localhost:5000/users/findByUsername/' + this.state.login;
     axios.get(url)
       .then(user => {
-        console.log(user);
         if(user.data.password === this.state.password) {
           this.playerId = user.data._id;
           this.setState({

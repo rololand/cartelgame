@@ -1,5 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 import './Game.css';
+
 import GameMenu from './GameMenu.js';
 
 import Brief from './Brief.js';
@@ -17,10 +19,53 @@ import Evaluation from './Evaluation.js';
 class Game extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
+      player: {
+        username: '',
+        class: '',
+        gold: 0,
+        stats: {
+          strength: 0,
+          dexterity: 0,
+          stamina: 0,
+          intelligence: 0,
+          luck: 0,
+          armor: 0
+        }
+      },
       actualGamePageName: "Brief",
-    }
+    };
+  }
+
+  componentDidMount() {
+    this.getPlayer();
+  }
+
+  getPlayer() {
+    const url  = 'http://localhost:5000/heros/' + this.props.playerId;
+    axios.get(url)
+      .then(player => {
+        this.setState({
+          player: player.data
+        })
+      })
+      .catch(err => {
+        console.log('Error: ' + err);
+      });
+  }
+
+  updatePlayer(player) {
+    const url  = 'http://localhost:5000/heros/update/' + player._id;
+    axios.post(url, player)
+      .then((player) => {
+        this.setState({
+          player: player.data
+        })
+      })
+      .catch(err => {
+        console.log('Error: ' + err);
+      });
+
   }
 
   handleGameMenuClick(name) {
@@ -31,7 +76,8 @@ class Game extends React.Component {
 
   selectGamePage() {
     if (this.state.actualGamePageName==="Brief") {
-      return <Brief playerId={this.props.playerId}/>
+      return <Brief player={this.state.player}
+                    updatePlayer={this.updatePlayer.bind(this)}/>
     } else if (this.state.actualGamePageName==="MeetingRoom") {
       return <MeetingRoom />
     } else if (this.state.actualGamePageName==="OpenSpace") {
