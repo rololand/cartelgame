@@ -21,7 +21,8 @@ class App extends React.Component{
     const url  = 'http://localhost:5000/users/findByUsername/' + this.state.login;
     axios.get(url)
       .then(user => {
-        if(user.data.password == this.state.password) {
+        console.log(user);
+        if(user.data.password === this.state.password) {
           this.playerId = user.data._id;
           this.setState({
             isUserLogged: true,
@@ -61,6 +62,49 @@ class App extends React.Component{
     })
   }
 
+  createHero() {
+    console.log('create hero..');
+    const user = {
+      username: 'admin',
+      password: 'admin',
+      email: 'roland.erkiert@gmail.com',
+      sex: 'M'
+    };
+
+    const urluser  = 'http://localhost:5000/users/add';
+    axios.post(urluser, user)
+      .then(user => {
+        console.log(user);
+
+        const hero = {
+          _id: user.data._id,
+          username: "admin",
+          category: "developer",
+          gold: 1000,
+          stats: {
+            strength: 1,
+            dexterity: 1,
+            stamina: 1,
+            intelligence: 1,
+            luck: 1,
+            armor: 1
+          }
+        };
+
+        const urlhero  = 'http://localhost:5000/heros/add';
+        axios.post(urlhero, hero)
+          .then(hero => {
+            console.log(hero);
+          })
+          .catch(err => {
+            console.log('Error: ' + err);
+          });
+      })
+      .catch(err => {
+        console.log('Error: ' + err);
+      });
+  }
+
   render() {
 
     return (
@@ -69,13 +113,16 @@ class App extends React.Component{
           <Game onClickLogout={this.handleOnClickLogout.bind(this)}
                 playerId={this.playerId}/> :
           <div>
-          <Logging  handleLoggingOnClickButton={this.handleLoggingOnClickButton.bind(this)}
-                    handleChangeLogin={this.handleChangeLogin.bind(this)}
-                    handleChangePassword={this.handleChangePassword.bind(this)}
-                    login={this.state.login}
-                    password={this.state.password}
-          />
-          <LogErrMsg logErrMsg={this.state.logErrMsg} />
+            <br />
+            Dodaj herosa: admin, admin, mail, M<br />
+            <button onClick={this.createHero.bind(this)}>DODAJ</button><br /><br /><br />
+            <Logging  handleLoggingOnClickButton={this.handleLoggingOnClickButton.bind(this)}
+                      handleChangeLogin={this.handleChangeLogin.bind(this)}
+                      handleChangePassword={this.handleChangePassword.bind(this)}
+                      login={this.state.login}
+                      password={this.state.password}
+            />
+            <LogErrMsg logErrMsg={this.state.logErrMsg} />
           </div>
         }
       </div>

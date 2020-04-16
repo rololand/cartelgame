@@ -24,6 +24,9 @@ connection.once('open', () => {
 const usersRouter = require('./routes/users.js');
 app.use('/users', usersRouter);
 
+const herosRouter = require('./routes/heros.js');
+app.use('/heros', herosRouter);
+
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });

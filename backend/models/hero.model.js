@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const heroSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -10,22 +10,21 @@ const userSchema = new Schema({
     trim: true, //remove white spaces
     minlength: 3
   },
-  password: {
+  category: {
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
+  gold: {
+    type: Number,
+    required: true
   },
-  sex: {
-    type: String,
+  stats: {
+    type: Object,
     required: true
   }
 }, {
   timestamps: true
 });
 
-const User = mongoose.model('User', userSchema);
-module.exports = User
+const Hero = mongoose.model('Hero', heroSchema);
+module.exports = Hero
