@@ -1,4 +1,5 @@
 import React from 'react';
+import './Brief.css';
 
 class Brief extends React.Component {
 
@@ -28,36 +29,80 @@ class Brief extends React.Component {
   }
 
   render() {
+    const statsNamesPL = ["siła", "zręczność", "wytrzymałość", "inteligencja", "szczęście", "pancerz"];
+    const statsNamesEN = ["strength", "dexterity", "stamina", "intelligence", "luck", "armor"];
+
+    let head = require('../db/items/head/cap.png');
+    let body = require('../db/items/body/shirt.png');
+    let legs = require('../db/items/legs/belt.png');
+    let foots = require('../db/items/foots/shoes.png');
+
+    let avatar = require('../db/avatars/javierpena.png');
+    let ammo = require('../db/items/ammo/gun.png');
+
+    let palms = require('../db/items/palms/gloves.png');
+    let finger = require('../db/items/finger/ring.png');
+    let neck = require('../db/items/neck/necklace.png');
+    let amulet = require('../db/items/amulets/glasses.png');
     return (
       <div>
         Brief <br />
-        Nick: {this.props.player.username}<br />
-        Klasa: {this.props.player.category}<br />
-        Złoto: {this.props.player.gold}<br />
-        Siła: {this.props.player.stats.strength}<AddStatsButton onClick={this.addStatsPoint.bind(this)}
-                                                                statName="strength"
-                                                                cost={this.claculatePointCost("strength")}
-                                                                isDisabled={!this.isEnoughGoldToBuyStatsPoint("strength")}/><br />
-        Zręczność: {this.props.player.stats.dexterity}<AddStatsButton onClick={this.addStatsPoint.bind(this)}
-                                                                statName="dexterity"
-                                                                cost={this.claculatePointCost("dexterity")}
-                                                                isDisabled={!this.isEnoughGoldToBuyStatsPoint("dexterity")}/><br />
-        Wytrzymałość: {this.props.player.stats.stamina}<AddStatsButton onClick={this.addStatsPoint.bind(this)}
-                                                                statName="stamina"
-                                                                cost={this.claculatePointCost("stamina")}
-                                                                isDisabled={!this.isEnoughGoldToBuyStatsPoint("stamina")}/><br />
-        Inteligencja: {this.props.player.stats.intelligence}<AddStatsButton onClick={this.addStatsPoint.bind(this)}
-                                                                statName="intelligence"
-                                                                cost={this.claculatePointCost("intelligence")}
-                                                                isDisabled={!this.isEnoughGoldToBuyStatsPoint("intelligence")}/><br />
-        Szczęście: {this.props.player.stats.luck}<AddStatsButton onClick={this.addStatsPoint.bind(this)}
-                                                                statName="luck"
-                                                                cost={this.claculatePointCost("luck")}
-                                                                isDisabled={!this.isEnoughGoldToBuyStatsPoint("luck")}/><br />
-        Pancerz: {this.props.player.stats.armor}<AddStatsButton onClick={this.addStatsPoint.bind(this)}
-                                                                statName="armor"
-                                                                cost={this.claculatePointCost("armor")}
-                                                                isDisabled={!this.isEnoughGoldToBuyStatsPoint("armor")}/><br />
+        Nick: {this.props.player.username} {}
+        Klasa: {this.props.player.category} {}
+        Złoto: {this.props.player.gold}
+
+        <div className="equipment">
+          <div>
+            <div>
+              <img src={head} alt={''}/>
+            </div>
+            <div>
+              <img src={body} alt={''}/>
+            </div>
+            <div>
+              <img src={legs} alt={''}/>
+            </div>
+            <div>
+              <img src={foots} alt={''}/>
+            </div>
+          </div>
+          <div>
+            <div>
+              <img src={avatar} alt={''}/>
+            </div>
+            <div>
+              <img src={ammo} alt={''}/>
+            </div>
+          </div>
+          <div>
+            <div>
+              <img src={palms} alt={''}/>
+            </div>
+            <div>
+              <img src={finger} alt={''}/>
+            </div>
+            <div>
+              <img src={neck} alt={''}/>
+            </div>
+            <div>
+              <img src={amulet} alt={''}/>
+            </div>
+          </div>
+        </div>
+
+        {statsNamesEN.map((statName, index)=>
+          <div key={statsNamesPL[index]} className="statsContainer">
+            <div className="statsName">
+              {statsNamesPL[index]}: {this.props.player.stats[statName]}
+            </div>
+            <AddStatsButton onClick={this.addStatsPoint.bind(this)}
+                            statName={statName}
+                            cost={this.claculatePointCost(statName)}
+                            isDisabled={!this.isEnoughGoldToBuyStatsPoint(statName)}/><br />
+          </div>
+        )}
+
+
       </div>
     )
   }

@@ -9,6 +9,9 @@
 /backend/node_modules
 /backend/.env
 
+#db
+/src/db
+
 # testing
 /coverage
 

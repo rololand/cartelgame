@@ -1,0 +1,13 @@
+.statsContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.statsName {
+  width: 150px;
+}
+
+.equipment {
+  display: flex;
+  flex-direction: row;
+}
