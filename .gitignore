@@ -10,7 +10,7 @@
 /backend/.env
 
 #db
-/src/db
+/public/db
 
 # testing
 /coverage

@@ -27,6 +27,8 @@ app.use('/users', usersRouter);
 const herosRouter = require('./routes/heros.js');
 app.use('/heros', herosRouter);
 
+app.use(express.static('public'))
+
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });

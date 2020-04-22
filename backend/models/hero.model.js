@@ -21,6 +21,18 @@ const heroSchema = new Schema({
   stats: {
     type: Object,
     required: true
+  },
+  statsAllEquipments: {
+    type: Object,
+    required: true
+  },
+  equipment: {
+    type: Object,
+    required: true
+  },
+  avatar: {
+    type: String,
+    required: true
   }
 }, {
   timestamps: true

@@ -1,0 +1,26 @@
+.equipmentCard {
+  position: relative;
+  max-width: 100px;
+}
+
+.equipmentInfo {
+  text-align: left;
+  position: absolute;
+  top: 20px;
+  left: 100%;
+  z-index: 2;
+  background-color: #6a6b6b;
+  border: solid;
+  padding: 5px;
+}
+
+.equipmentTitle {
+  font-weight: bold;
+  display: block;
+}
+
+.equipmentDescription {
+  font-style: italic;
+  display: block;
+  margin-bottom: 5px;
+}

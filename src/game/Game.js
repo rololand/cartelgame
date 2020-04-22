@@ -4,7 +4,7 @@ import './Game.css';
 
 import GameMenu from './GameMenu.js';
 
-import Brief from './Brief.js';
+import Brief from './Brief/Brief.js';
 import MeetingRoom from './MeetingRoom.js';
 import OpenSpace from './OpenSpace.js';
 import Assets from './Assets.js';
@@ -31,7 +31,135 @@ class Game extends React.Component {
           intelligence: 0,
           luck: 0,
           armor: 0
-        }
+        },
+        statsAllEquipments: {
+          strength: 0,
+          dexterity: 0,
+          stamina: 0,
+          intelligence: 0,
+          luck: 0,
+          armor: 0
+        },
+        equipment: {
+          head: {
+            name: '',
+            imgUrl: 'blank.png',
+            description: '',
+            stats: {
+              strength: 0,
+              dexterity: 0,
+              stamina: 0,
+              intelligence: 0,
+              luck: 0,
+              armor: 0
+            }
+          },
+          body: {
+            name: '',
+            imgUrl: 'blank.png',
+            description: '',
+            stats: {
+              strength: 0,
+              dexterity: 0,
+              stamina: 0,
+              intelligence: 0,
+              luck: 0,
+              armor: 0
+            }
+          },
+          legs: {
+            name: '',
+            imgUrl: 'blank.png',
+            description: '',
+            stats: {
+              strength: 0,
+              dexterity: 0,
+              stamina: 0,
+              intelligence: 0,
+              luck: 0,
+              armor: 0
+            }
+          },
+          foots: {
+            name: '',
+            imgUrl: 'blank.png',
+            description: '',
+            stats: {
+              strength: 0,
+              dexterity: 0,
+              stamina: 0,
+              intelligence: 0,
+              luck: 0,
+              armor: 0
+            }
+          },
+          ammo: {
+            name: '',
+            imgUrl: 'blank.png',
+            description: '',
+            stats: {
+              strength: 0,
+              dexterity: 0,
+              stamina: 0,
+              intelligence: 0,
+              luck: 0,
+              armor: 0
+            }
+          },
+          palms: {
+            name: '',
+            imgUrl: 'blank.png',
+            description: '',
+            stats: {
+              strength: 0,
+              dexterity: 0,
+              stamina: 0,
+              intelligence: 0,
+              luck: 0,
+              armor: 0
+            }
+          },
+          finger: {
+            name: '',
+            imgUrl: 'blank.png',
+            description: '',
+            stats: {
+              strength: 0,
+              dexterity: 0,
+              stamina: 0,
+              intelligence: 0,
+              luck: 0,
+              armor: 0
+            }
+          },
+          neck: {
+            name: '',
+            imgUrl: 'blank.png',
+            description: '',
+            stats: {
+              strength: 0,
+              dexterity: 0,
+              stamina: 0,
+              intelligence: 0,
+              luck: 0,
+              armor: 0
+            }
+          },
+          amulet: {
+            name: '',
+            imgUrl: 'blank.png',
+            description: '',
+            stats: {
+              strength: 0,
+              dexterity: 0,
+              stamina: 0,
+              intelligence: 0,
+              luck: 0,
+              armor: 0
+            }
+          }
+        },
+        avatar: 'blank.png'
       },
       actualGamePageName: "Brief",
     };
