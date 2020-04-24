@@ -64,9 +64,6 @@ class Brief extends React.Component {
 
     return (
       <div>
-        Nick: {this.props.player.username} {}
-        Klasa: {this.props.player.category} {}
-        Złoto: {this.props.player.gold}
 
         <div className="equipment">
           <div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Game.css';
 
 import GameMenu from './GameMenu.js';
+import GameHeader from './GameHeader.js';
 
 import Brief from './Brief/Brief.js';
 import MeetingRoom from './MeetingRoom.js';
@@ -24,6 +25,9 @@ class Game extends React.Component {
         username: '',
         class: '',
         gold: 0,
+        lvl: 0,
+        exp: 0,
+        expNextLvl: 0,
         stats: {
           strength: 0,
           dexterity: 0,
@@ -236,6 +240,7 @@ class Game extends React.Component {
           <GameMenu onClick={this.handleGameMenuClick.bind(this)} onClickLogout={this.props.onClickLogout.bind(this)}/>
         </div>
         <div className="GamePage">
+          <GameHeader player={this.state.player}/>
           {this.selectGamePage()}
         </div>
       </div>
