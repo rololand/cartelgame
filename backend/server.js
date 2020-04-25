@@ -27,6 +27,9 @@ app.use('/users', usersRouter);
 const herosRouter = require('./routes/heros.js');
 app.use('/heros', herosRouter);
 
+const tasksRouter = require('./routes/tasks.js');
+app.use('/tasks', tasksRouter);
+
 app.use(express.static('public'))
 
 app.listen(port, () => {

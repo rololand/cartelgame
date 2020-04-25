@@ -5,17 +5,17 @@ function GameHeader(props) {
   const [isPopUp, setIsPopUp] = useState(false);
   return (
     <div>
-      <div class="headerContainer">
-        <div class="headerItem">
+      <div className="headerContainer">
+        <div className="headerItem">
           Nick: {props.player.username}
         </div>
-        <div class="headerItem">
+        <div className="headerItem">
           Klasa: {props.player.category}
         </div>
-        <div class="headerItem">
+        <div className="headerItem">
           Złoto: {props.player.gold}
         </div>
-        <div class="headerItem">
+        <div className="headerItem">
           Lvl: {props.player.lvl}
         </div>
       </div>

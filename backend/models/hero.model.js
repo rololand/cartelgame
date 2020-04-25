@@ -18,6 +18,18 @@ const heroSchema = new Schema({
     type: Number,
     required: true
   },
+  exp: {
+    type: Number,
+    required: true
+  },
+  expNextLvl: {
+    type: Number,
+    required: true
+  },
+  lvl: {
+    type: Number,
+    required: true
+  },
   stats: {
     type: Object,
     required: true
@@ -27,6 +39,10 @@ const heroSchema = new Schema({
     required: true
   },
   equipment: {
+    type: Object,
+    required: true
+  },
+  task: {
     type: Object,
     required: true
   },

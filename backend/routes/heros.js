@@ -46,9 +46,13 @@ router.route('/update/:id').post((req, res) => {
       hero.username = req.body.username;
       hero.category = req.body.category;
       hero.gold = req.body.gold;
+      hero.exp = req.body.exp;
+      hero.expNextLvl = req.body.expNextLvl;
+      hero.lvl = req.body.lvl;
       hero.stats = req.body.stats;
       hero.statsAllEquipments = req.body.statsAllEquipments;
       hero.equipment = req.body.equipment;
+      hero.task = req.body.task;
       hero.avatar = req.body.avatar;
 
       hero.save()

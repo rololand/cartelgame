@@ -63,7 +63,7 @@ class Brief extends React.Component {
     const statsNamesEN = ["strength", "dexterity", "stamina", "intelligence", "luck", "armor"];
 
     return (
-      <div>
+      <div id="Brief">
 
         <div className="equipment">
           <div>

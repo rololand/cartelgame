@@ -6,16 +6,20 @@
   margin-right: auto;
   margin-top: 5px;
   margin-bottom: 5px;
+  border: solid 1px;
+  padding: 5px;
 }
 
 .GameMenu {
   width: 20%;
+  border: solid 1px;
+  margin-right: 5px;
 }
 
 .GamePage {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  border: solid 1px;
-  padding: 5px;
+  width: 100%;
+
 }

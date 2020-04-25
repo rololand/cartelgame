@@ -6,7 +6,7 @@ import GameMenu from './GameMenu.js';
 import GameHeader from './GameHeader.js';
 
 import Brief from './Brief/Brief.js';
-import MeetingRoom from './MeetingRoom.js';
+import MeetingRoom from './MeetingRoom/MeetingRoom.js';
 import OpenSpace from './OpenSpace.js';
 import Assets from './Assets.js';
 import CoffeeBreak from './CoffeeBreak.js';
@@ -163,14 +163,25 @@ class Game extends React.Component {
             }
           }
         },
+        task: {
+          isStarted: false,
+          isFinished: false,
+          isCalculated: false,
+          endTime: new Date(),
+          taskId: 0,
+          gold: 0,
+          exp: 0
+        },
         avatar: 'blank.png'
       },
+      tasksList: [],
       actualGamePageName: "Brief",
     };
   }
 
   componentDidMount() {
     this.getPlayer();
+    this.getTasksList();
   }
 
   getPlayer() {
@@ -179,7 +190,12 @@ class Game extends React.Component {
       .then(player => {
         this.setState({
           player: player.data
-        })
+        });
+        // if (this.state.player.task.isStarted) {
+        //   this.setState({
+        //     actualGamePageName: "MeetingRoom"
+        //   })
+        // }
       })
       .catch(err => {
         console.log('Error: ' + err);
@@ -200,6 +216,19 @@ class Game extends React.Component {
 
   }
 
+  getTasksList() {
+    const url  = 'http://localhost:5000/tasks/';
+    axios.get(url)
+      .then(tasks => {
+        this.setState({
+          tasksList: tasks.data[0].tasksList
+        });
+      })
+      .catch(err => {
+        console.log('Error: ' + err);
+      });
+  }
+
   handleGameMenuClick(name) {
     this.setState({
       actualGamePageName: name
@@ -211,7 +240,9 @@ class Game extends React.Component {
       return <Brief player={this.state.player}
                     updatePlayer={this.updatePlayer.bind(this)}/>
     } else if (this.state.actualGamePageName==="MeetingRoom") {
-      return <MeetingRoom />
+      return <MeetingRoom tasksList={this.state.tasksList}
+                          player={this.state.player}
+                          updatePlayer={this.updatePlayer.bind(this)}/>
     } else if (this.state.actualGamePageName==="OpenSpace") {
       return <OpenSpace />
     } else if (this.state.actualGamePageName==="ItSupport") {
