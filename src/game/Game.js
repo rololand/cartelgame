@@ -167,10 +167,12 @@ class Game extends React.Component {
           isStarted: false,
           isFinished: false,
           isCalculated: false,
+          isTasksIdSelected: false,
+          selectedTasksList: [],
           endTime: new Date(),
           taskId: 0,
-          gold: 0,
-          exp: 0
+          gold: [],
+          exp: []
         },
         avatar: 'blank.png'
       },
