@@ -27,7 +27,7 @@ function Game(props) {
   useEffect(() => {
     getPlayer();
     getTasksList();
-  });
+  }, []);
 
   function getPlayer() {
     const url  = 'http://localhost:5000/heros/' + props.playerId;
