@@ -1,14 +1,14 @@
 import React from 'react';
 
-class Evaluation extends React.Component {
+function Evaluation () {
 
-  render() {
-    return (
-      <div>
-        Evaluation
-      </div>
-    )
-  }
+
+  return (
+    <div>
+      Evaluation
+    </div>
+  )
+
 }
 
 export default Evaluation;

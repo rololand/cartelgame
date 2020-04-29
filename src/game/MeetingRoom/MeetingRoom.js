@@ -4,14 +4,7 @@ import TasksContainer from './TasksContainer.js'
 function MeetingRoom(props) {
   const [time, setTime] = useState("00:00");
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      finishTask();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [props.player.task.isStarted, finishTask]);
-
-  function isTaskFinished() {
+  const isTaskFinished = React.useCallback(() => {
     if (props.player.task.isStarted) {
       const endTime = props.player.task.endTime;
       const currentTime = new Date().getTime();
@@ -20,7 +13,22 @@ function MeetingRoom(props) {
       return endTime < currentTime
     }
     return true
-  }
+  }, [props.player.task.endTime, props.player.task.isStarted])
+
+  const finishTask = React.useCallback(() => {
+    if(isTaskFinished()) {
+      let newPlayer = props.player;
+      newPlayer.task.isFinished = true;
+      props.updatePlayer(newPlayer)
+    }
+  }, [isTaskFinished, props])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      finishTask();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [props.player.task.isStarted, props.player.task.isStarted, finishTask]);
 
   function counter(time) {
     let m = Math.floor(time/60);
@@ -49,15 +57,8 @@ function MeetingRoom(props) {
     props.updatePlayer(newPlayer)
   }
 
-  function finishTask() {
-    if(isTaskFinished()) {
-      let newPlayer = props.player;
-      newPlayer.task.isFinished = true;
-      props.updatePlayer(newPlayer)
-    }
-  }
-
   function calculateTask() {
+    console.log("calculating")
     if(isTaskFinished()) {
       let newPlayer = props.player;
       newPlayer.task.isStarted = false;
@@ -76,7 +77,7 @@ function MeetingRoom(props) {
   function pageSelector() {
     if(props.player.task.isStarted) {
       if(props.player.task.isFinished)
-        return <div><button onClick={() => calculateTask(0)}>Calculate Task</button></div>
+        return <div><button onClick={() => calculateTask()}>Calculate Task</button></div>
       else
         return <div>{time}</div>
     } else {

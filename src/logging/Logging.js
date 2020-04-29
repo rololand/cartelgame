@@ -1,15 +1,14 @@
 import React from 'react';
 
-class Logging extends React.Component {
-  render() {
-    return (
-      <div>
-        <input value={this.props.login} onChange={this.props.handleChangeLogin}/>
-        <input value={this.props.password} onChange={this.props.handleChangePassword}/>
-        <button onClick={this.props.handleLoggingOnClickButton}>LOGIN</button>
-      </div>
-    )
-  }
+
+function Logging(props) {
+  return (
+    <div>
+      <input value={props.login} onChange={event => props.handleChangeLogin(event.target.value)}/>
+      <input value={props.password} onChange={event => props.handleChangePassword(event.target.value)}/>
+      <button onClick={() => props.handleLoggingOnClickButton()}>LOGIN</button>
+    </div>
+  )
 }
 
 export default Logging;

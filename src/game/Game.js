@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Game.css';
 
@@ -17,200 +17,35 @@ import Team from './Team.js';
 import MailBox from './MailBox.js';
 import Evaluation from './Evaluation.js';
 
-class Game extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      player: {
-        username: '',
-        class: '',
-        gold: 0,
-        lvl: 0,
-        exp: 0,
-        expNextLvl: 0,
-        stats: {
-          strength: 0,
-          dexterity: 0,
-          stamina: 0,
-          intelligence: 0,
-          luck: 0,
-          armor: 0
-        },
-        statsAllEquipments: {
-          strength: 0,
-          dexterity: 0,
-          stamina: 0,
-          intelligence: 0,
-          luck: 0,
-          armor: 0
-        },
-        equipment: {
-          head: {
-            name: '',
-            imgUrl: 'blank.png',
-            description: '',
-            stats: {
-              strength: 0,
-              dexterity: 0,
-              stamina: 0,
-              intelligence: 0,
-              luck: 0,
-              armor: 0
-            }
-          },
-          body: {
-            name: '',
-            imgUrl: 'blank.png',
-            description: '',
-            stats: {
-              strength: 0,
-              dexterity: 0,
-              stamina: 0,
-              intelligence: 0,
-              luck: 0,
-              armor: 0
-            }
-          },
-          legs: {
-            name: '',
-            imgUrl: 'blank.png',
-            description: '',
-            stats: {
-              strength: 0,
-              dexterity: 0,
-              stamina: 0,
-              intelligence: 0,
-              luck: 0,
-              armor: 0
-            }
-          },
-          foots: {
-            name: '',
-            imgUrl: 'blank.png',
-            description: '',
-            stats: {
-              strength: 0,
-              dexterity: 0,
-              stamina: 0,
-              intelligence: 0,
-              luck: 0,
-              armor: 0
-            }
-          },
-          ammo: {
-            name: '',
-            imgUrl: 'blank.png',
-            description: '',
-            stats: {
-              strength: 0,
-              dexterity: 0,
-              stamina: 0,
-              intelligence: 0,
-              luck: 0,
-              armor: 0
-            }
-          },
-          palms: {
-            name: '',
-            imgUrl: 'blank.png',
-            description: '',
-            stats: {
-              strength: 0,
-              dexterity: 0,
-              stamina: 0,
-              intelligence: 0,
-              luck: 0,
-              armor: 0
-            }
-          },
-          finger: {
-            name: '',
-            imgUrl: 'blank.png',
-            description: '',
-            stats: {
-              strength: 0,
-              dexterity: 0,
-              stamina: 0,
-              intelligence: 0,
-              luck: 0,
-              armor: 0
-            }
-          },
-          neck: {
-            name: '',
-            imgUrl: 'blank.png',
-            description: '',
-            stats: {
-              strength: 0,
-              dexterity: 0,
-              stamina: 0,
-              intelligence: 0,
-              luck: 0,
-              armor: 0
-            }
-          },
-          amulet: {
-            name: '',
-            imgUrl: 'blank.png',
-            description: '',
-            stats: {
-              strength: 0,
-              dexterity: 0,
-              stamina: 0,
-              intelligence: 0,
-              luck: 0,
-              armor: 0
-            }
-          }
-        },
-        task: {
-          isStarted: false,
-          isFinished: false,
-          isCalculated: false,
-          isTasksIdSelected: false,
-          selectedTasksList: [],
-          endTime: new Date(),
-          taskId: 0,
-          gold: [],
-          exp: []
-        },
-        avatar: 'blank.png'
-      },
-      tasksList: [],
-      actualGamePageName: "Brief",
-    };
-  }
+function Game(props) {
 
-  componentDidMount() {
-    this.getPlayer();
-    this.getTasksList();
-  }
+  const [actualGamePageName, setActualGamePageName] = useState("Brief");
+  const [player, setPlayer] = useState({});
+  const [tasksList, setTaskList] = useState([]);
+  const [isPlayerDataLoaded, setPlayerDataLoaded] = useState(false);
 
-  getPlayer() {
-    const url  = 'http://localhost:5000/heros/' + this.props.playerId;
+  useEffect(() => {
+    getPlayer();
+    getTasksList();
+  });
+
+  function getPlayer() {
+    const url  = 'http://localhost:5000/heros/' + props.playerId;
     axios.get(url)
       .then(player => {
-        this.setState({
-          player: player.data
-        });
-        // if (this.state.player.task.isStarted) {
-        //   this.setState({
-        //     actualGamePageName: "MeetingRoom"
-        //   })
-        // }
+        setPlayer(player.data);
+        setPlayerDataLoaded(true);
       })
       .catch(err => {
         console.log('Error: ' + err);
       });
   }
 
-  updatePlayer(player) {
+  function updatePlayer(player) {
     const url  = 'http://localhost:5000/heros/update/' + player._id;
     axios.post(url, player)
       .then((player) => {
-        this.setState({
-          player: player.data
-        })
+        setPlayer(player.data)
       })
       .catch(err => {
         console.log('Error: ' + err);
@@ -218,67 +53,63 @@ class Game extends React.Component {
 
   }
 
-  getTasksList() {
+  function getTasksList() {
     const url  = 'http://localhost:5000/tasks/';
     axios.get(url)
       .then(tasks => {
-        this.setState({
-          tasksList: tasks.data[0].tasksList
-        });
+        setTaskList(tasks.data[0].tasksList)
       })
       .catch(err => {
         console.log('Error: ' + err);
       });
   }
 
-  handleGameMenuClick(name) {
-    this.setState({
-      actualGamePageName: name
-    })
-  }
-
-  selectGamePage() {
-    if (this.state.actualGamePageName==="Brief") {
-      return <Brief player={this.state.player}
-                    updatePlayer={this.updatePlayer.bind(this)}/>
-    } else if (this.state.actualGamePageName==="MeetingRoom") {
-      return <MeetingRoom tasksList={this.state.tasksList}
-                          player={this.state.player}
-                          updatePlayer={this.updatePlayer.bind(this)}/>
-    } else if (this.state.actualGamePageName==="OpenSpace") {
+  function selectGamePage() {
+    if (actualGamePageName==="Brief") {
+      return <Brief player={player}
+                    updatePlayer={(player) => updatePlayer(player)}/>
+    } else if (actualGamePageName==="MeetingRoom") {
+      return <MeetingRoom tasksList={tasksList}
+                          player={player}
+                          updatePlayer={(player) => updatePlayer(player)}/>
+    } else if (actualGamePageName==="OpenSpace") {
       return <OpenSpace />
-    } else if (this.state.actualGamePageName==="ItSupport") {
+    } else if (actualGamePageName==="ItSupport") {
       return <ItSupport />
-    } else if (this.state.actualGamePageName==="CoffeeBreak") {
+    } else if (actualGamePageName==="CoffeeBreak") {
       return <CoffeeBreak />
-    } else if (this.state.actualGamePageName==="Assets") {
+    } else if (actualGamePageName==="Assets") {
       return <Assets />
-    } else if (this.state.actualGamePageName==="Market") {
+    } else if (actualGamePageName==="Market") {
       return <Market />
-    } else if (this.state.actualGamePageName==="Office") {
+    } else if (actualGamePageName==="Office") {
       return <Office />
-    } else if (this.state.actualGamePageName==="Team") {
+    } else if (actualGamePageName==="Team") {
       return <Team />
-    } else if (this.state.actualGamePageName==="MailBox") {
+    } else if (actualGamePageName==="MailBox") {
       return <MailBox />
-    } else if (this.state.actualGamePageName==="Evaluation") {
+    } else if (actualGamePageName==="Evaluation") {
       return <Evaluation />
     }
   }
 
-  render() {
-    return (
+
+  return (
+    isPlayerDataLoaded ?
       <div className="gameContainer">
         <div className="GameMenu">
-          <GameMenu onClick={this.handleGameMenuClick.bind(this)} onClickLogout={this.props.onClickLogout.bind(this)}/>
+          <GameMenu onClick={(name) => setActualGamePageName(name)} onClickLogout={() => props.onClickLogout()}/>
         </div>
         <div className="GamePage">
-          <GameHeader player={this.state.player}/>
-          {this.selectGamePage()}
+          <GameHeader player={player}/>
+          {selectGamePage()}
         </div>
+      </div> :
+      <div>
+        loading page
       </div>
-    )
-  }
+
+  )
 }
 
 export default Game;

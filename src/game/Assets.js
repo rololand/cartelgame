@@ -1,14 +1,14 @@
 import React from 'react';
 
-class Assets extends React.Component {
+function Assets () {
 
-  render() {
-    return (
-      <div>
-        Assets
-      </div>
-    )
-  }
+
+  return (
+    <div>
+      Assets
+    </div>
+  )
+
 }
 
 export default Assets;

@@ -1,14 +1,14 @@
 import React from 'react';
 
-class MailBox extends React.Component {
+function MailBox () {
 
-  render() {
-    return (
-      <div>
-        MailBox
-      </div>
-    )
-  }
+
+  return (
+    <div>
+      MailBox
+    </div>
+  )
+
 }
 
 export default MailBox;

@@ -1,14 +1,14 @@
 import React from 'react';
 
-class CoffeeBreak extends React.Component {
+function CoffeeBreak () {
 
-  render() {
-    return (
-      <div>
-        CoffeeBreak
-      </div>
-    )
-  }
+
+  return (
+    <div>
+      CoffeeBreak
+    </div>
+  )
+
 }
 
 export default CoffeeBreak;

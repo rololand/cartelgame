@@ -1,14 +1,14 @@
 import React from 'react';
 
-class Team extends React.Component {
+function Team () {
 
-  render() {
-    return (
-      <div>
-        Team
-      </div>
-    )
-  }
+
+  return (
+    <div>
+      Team
+    </div>
+  )
+
 }
 
 export default Team;

@@ -1,14 +1,14 @@
 import React from 'react';
 
-class Office extends React.Component {
+function Office () {
 
-  render() {
-    return (
-      <div>
-        Office
-      </div>
-    )
-  }
+
+  return (
+    <div>
+      Office
+    </div>
+  )
+
 }
 
 export default Office;

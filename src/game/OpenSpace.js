@@ -1,14 +1,14 @@
 import React from 'react';
 
-class OpenSpace extends React.Component {
+function OpenSpace () {
 
-  render() {
-    return (
-      <div>
-        OpenSpace
-      </div>
-    )
-  }
+
+  return (
+    <div>
+      OpenSpace
+    </div>
+  )
+
 }
 
 export default OpenSpace;

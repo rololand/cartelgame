@@ -5,13 +5,13 @@ import AddStatsButton from './AddStatsButton.js';
 import EquipmentCard from './EquipmentCard.js';
 import AvatarCard from './AvatarCard.js';
 
-class Brief extends React.Component {
+function Brief(props) {
 
-  calculateStatsAllEquipments() {
+  function calculateStatsAllEquipments() {
     const equipmentNames = ["head", "body", "legs", "foots", "ammo", "palms", "finger", "neck", "amulet"];
     const statsNamesEN = ["strength", "dexterity", "stamina", "intelligence", "luck", "armor"];
-    const newPlayer = this.props.player;
-    const equipments = this.props.player.equipment;
+    const newPlayer = props.player;
+    const equipments = props.player.equipment;
     let equipmentStats = {}
     const newStatsAllEquipments = {
       strength: 0,
@@ -30,35 +30,35 @@ class Brief extends React.Component {
     }
 
     newPlayer.statsAllEquipments = newStatsAllEquipments;
-    this.props.updatePlayer(newPlayer);
+    props.updatePlayer(newPlayer);
   }
 
-  claculatePointCost(statName) {
-    const statValue = this.props.player.stats[statName];
+  function claculatePointCost(statName) {
+    const statValue = props.player.stats[statName];
     const pointCost = (statValue + 1) * 10;
 
     return pointCost
   }
 
-  isEnoughGoldToBuyStatsPoint(statName) {
-    const playerGold = this.props.player.gold;
-    const pointCost = this.claculatePointCost(statName);
+  function isEnoughGoldToBuyStatsPoint(statName) {
+    const playerGold = props.player.gold;
+    const pointCost = claculatePointCost(statName);
 
     return playerGold > pointCost
   }
 
-  addStatsPoint(statName) {
-    const newPlayer = this.props.player;
+  function addStatsPoint(statName) {
+    const newPlayer = props.player;
 
-    if(this.isEnoughGoldToBuyStatsPoint(statName)) {
-      newPlayer.gold = newPlayer.gold - this.claculatePointCost(statName);
+    if(isEnoughGoldToBuyStatsPoint(statName)) {
+      newPlayer.gold = newPlayer.gold - claculatePointCost(statName);
       newPlayer.stats[statName] = newPlayer.stats[statName] + 1;
 
-      this.props.updatePlayer(newPlayer);
+      props.updatePlayer(newPlayer);
     }
   }
 
-  render() {
+
     const statsNamesPL = ["siła", "zręczność", "wytrzymałość", "inteligencja", "szczęście", "pancerz"];
     const statsNamesEN = ["strength", "dexterity", "stamina", "intelligence", "luck", "armor"];
 
@@ -67,37 +67,36 @@ class Brief extends React.Component {
 
         <div className="equipment">
           <div>
-            <EquipmentCard equipment={this.props.player.equipment.head} />
-            <EquipmentCard equipment={this.props.player.equipment.body} />
-            <EquipmentCard equipment={this.props.player.equipment.legs} />
-            <EquipmentCard equipment={this.props.player.equipment.foots} />
+            <EquipmentCard equipment={props.player.equipment.head} />
+            <EquipmentCard equipment={props.player.equipment.body} />
+            <EquipmentCard equipment={props.player.equipment.legs} />
+            <EquipmentCard equipment={props.player.equipment.foots} />
           </div>
           <div>
-            <AvatarCard avatar={this.props.player.avatar} />
-            <EquipmentCard equipment={this.props.player.equipment.ammo} />
+            <AvatarCard avatar={props.player.avatar} />
+            <EquipmentCard equipment={props.player.equipment.ammo} />
           </div>
           <div>
-            <EquipmentCard equipment={this.props.player.equipment.palms} />
-            <EquipmentCard equipment={this.props.player.equipment.finger} />
-            <EquipmentCard equipment={this.props.player.equipment.neck} />
-            <EquipmentCard equipment={this.props.player.equipment.amulet} />
+            <EquipmentCard equipment={props.player.equipment.palms} />
+            <EquipmentCard equipment={props.player.equipment.finger} />
+            <EquipmentCard equipment={props.player.equipment.neck} />
+            <EquipmentCard equipment={props.player.equipment.amulet} />
           </div>
         </div>
 
         {statsNamesEN.map((statName, index)=>
           <div key={statsNamesPL[index]} className="statsContainer">
             <div className="statsName">
-              {statsNamesPL[index]}: {this.props.player.stats[statName]} + {this.props.player.statsAllEquipments[statName]}
+              {statsNamesPL[index]}: {props.player.stats[statName]} + {props.player.statsAllEquipments[statName]}
             </div>
-            <AddStatsButton onClick={this.addStatsPoint.bind(this)}
+            <AddStatsButton onClick={(statName) => addStatsPoint(statName)}
                             statName={statName}
-                            cost={this.claculatePointCost(statName)}
-                            isDisabled={!this.isEnoughGoldToBuyStatsPoint(statName)}/><br />
+                            cost={claculatePointCost(statName)}
+                            isDisabled={!isEnoughGoldToBuyStatsPoint(statName)}/><br />
           </div>
         )}
       </div>
     )
-  }
 }
 
 export default Brief;

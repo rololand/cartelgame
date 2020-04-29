@@ -1,14 +1,14 @@
 import React from 'react';
 
-class ItSupport extends React.Component {
+function ItSupport () {
 
-  render() {
-    return (
-      <div>
-        ItSupport
-      </div>
-    )
-  }
+
+  return (
+    <div>
+      ItSupport
+    </div>
+  )
+
 }
 
 export default ItSupport;

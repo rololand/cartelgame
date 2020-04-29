@@ -1,14 +1,14 @@
 import React from 'react';
 
-class Market extends React.Component {
+function Market () {
 
-  render() {
-    return (
-      <div>
-        Market
-      </div>
-    )
-  }
+
+  return (
+    <div>
+      Market
+    </div>
+  )
+
 }
 
 export default Market;
