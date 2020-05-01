@@ -1,6 +1,7 @@
 .equipmentCard {
   position: relative;
   max-width: 100px;
+  border: solid 1px;
 }
 
 .equipmentInfo {

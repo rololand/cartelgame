@@ -13,7 +13,7 @@ function EquipmentCard(props) {
             onMouseLeave={()=>setIsPopUp(false)}>
         <img src={url} alt={''}/>
       </div>
-      {isPopUp && (
+      {isPopUp && (props.equipment.name != '') && (
         <div className="equipmentInfo">
           <span className="equipmentTitle">{props.equipment.name}</span>
           <span className="equipmentDescription">{props.equipment.description}</span>
