@@ -1,89 +1,19 @@
-import React, {useState, useEffect } from 'react';
+import React from 'react';
 import TasksContainer from './TasksContainer.js'
 
 function MeetingRoom(props) {
-  const [time, setTime] = useState("00:00");
 
-  const isTaskFinished = React.useCallback(() => {
-    if (props.player.task.isStarted) {
-      const endTime = props.player.task.endTime;
-      const currentTime = new Date().getTime();
-      const secondsToEnd = Math.round((endTime - currentTime)/1000);
-      counter(secondsToEnd);
-      return endTime < currentTime
-    }
-    return true
-  }, [props.player.task.endTime, props.player.task.isStarted])
-
-  const finishTask = React.useCallback(() => {
-    if(isTaskFinished()) {
-      let newPlayer = props.player;
-      newPlayer.task.isFinished = true;
-      props.updatePlayer(newPlayer)
-    }
-  }, [isTaskFinished, props])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      finishTask();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [props.player.task.isStarted, props.player.task.isStarted, finishTask]);
-
-  function counter(time) {
-    let m = Math.floor(time/60);
-    let s = Math.round(time%60);
-    let min = '';
-    let sek = '';
-    m < 0 && (m = 0);
-    s < 0 && (s = 0);
-    m < 10 ? min = '0'+m : min = m;
-    s < 10 ? sek = '0'+s : sek = s;
-    setTime(min + ":" + sek);
-  }
-
-  function startTask(id, gold, exp) {
-    let date = new Date();
-    date = new Date(date.getTime() + props.tasksList[id].time*1000).getTime();
-    let newPlayer = props.player;
-
-    newPlayer.task.isStarted = true;
-    newPlayer.task.isFinished = false;
-    newPlayer.task.isCalculated = false;
-    newPlayer.task.endTime = date;
-    newPlayer.task.gold = [gold];
-    newPlayer.task.exp = [exp];
-
-    props.updatePlayer(newPlayer)
-  }
-
-  function calculateTask() {
-    console.log("calculating")
-    if(isTaskFinished()) {
-      let newPlayer = props.player;
-      newPlayer.task.isStarted = false;
-      newPlayer.task.isCalculated = true;
-      newPlayer.task.isTasksIdSelected = false;
-      Number.isInteger(newPlayer.task.gold[0]) ?
-        newPlayer.gold = newPlayer.gold + newPlayer.task.gold[0] :
-        newPlayer.gold = newPlayer.gold + 1;
-      Number.isInteger(newPlayer.task.exp[0]) ?
-        newPlayer.exp = newPlayer.exp + newPlayer.task.exp[0] :
-        newPlayer.exp = newPlayer.exp + 1;
-      props.updatePlayer(newPlayer)
-    }
-  }
 
   function pageSelector() {
     if(props.player.task.isStarted) {
       if(props.player.task.isFinished)
-        return <div><button onClick={() => calculateTask()}>Calculate Task</button></div>
+        return <div><button onClick={() => props.calculateTask()}>Calculate Task</button></div>
       else
-        return <div>{time}</div>
+        return <div>{props.time}</div>
     } else {
       if (!props.player.task.isTasksIdSelected)
         selectTasksId();
-      return <TasksContainer startTask={startTask.bind(this)}
+      return <TasksContainer startTask={props.startTask.bind(this)}
                             tasksList={props.tasksList}
                             selectedTasksList={props.player.task.selectedTasksList}
                             gold={props.player.task.gold}

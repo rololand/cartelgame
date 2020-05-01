@@ -7,7 +7,7 @@ function GameMenu(props) {
 
     <div className="menuContainer">
       <div className="menuButtonContainer"><button onClick={() => props.onClick("Brief")}>Brief</button></div>
-      <div className="menuButtonContainer"><button onClick={() => props.onClick("MeetingRoom")}>Meeting Room</button></div>
+      <div className="menuButtonContainer"><button onClick={() => props.onClick("MeetingRoom")}>Meeting Room {props.meetingRoomAlert}</button></div>
       <div className="menuButtonContainer"><button onClick={() => props.onClick("OpenSpace")}>Open Space</button></div>
       <div className="menuButtonContainer"><button onClick={() => props.onClick("Assets")}>Assets</button></div>
       <div className="menuButtonContainer"><button onClick={() => props.onClick("CoffeeBreak")}>Coffee Break</button></div>

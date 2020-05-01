@@ -71,7 +71,10 @@ function Game(props) {
     } else if (actualGamePageName==="MeetingRoom") {
       return <MeetingRoom tasksList={tasksList}
                           player={player}
-                          updatePlayer={(player) => updatePlayer(player)}/>
+                          updatePlayer={(player) => updatePlayer(player)}
+                          calculateTask={() => calculateTask()}
+                          time={time}
+                          startTask = {(id, gold, exp) => startTask(id, gold, exp)}/>
     } else if (actualGamePageName==="OpenSpace") {
       return <OpenSpace />
     } else if (actualGamePageName==="ItSupport") {
@@ -93,12 +96,94 @@ function Game(props) {
     }
   }
 
+  //MeetingRoom start
+  const [time, setTime] = useState("00:00");
+  const [meetingRoomAlert, setMeetingRoomAlert] = useState('');
+
+  const isTaskFinished = React.useCallback(() => {
+    if (player.task.isStarted) {
+      const endTime = player.task.endTime;
+      const currentTime = new Date().getTime();
+      const secondsToEnd = Math.round((endTime - currentTime)/1000);
+      counter(secondsToEnd);
+      return endTime < currentTime
+    }
+    return true
+  }, [player])
+
+  const finishTask = React.useCallback(() => {
+    if(player.task.isStarted && isTaskFinished()) {
+      let newPlayer = player;
+      newPlayer.task.isFinished = true;
+      setMeetingRoomAlert('!!');
+      updatePlayer(newPlayer)
+    }
+  }, [isTaskFinished, player])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      finishTask();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [player, finishTask]);
+
+  function counter(time) {
+    let m = Math.floor(time/60);
+    let s = Math.round(time%60);
+    let min = '';
+    let sek = '';
+    m < 0 && (m = 0);
+    s < 0 && (s = 0);
+    m < 10 ? min = '0'+m : min = m;
+    s < 10 ? sek = '0'+s : sek = s;
+    setTime(min + ":" + sek);
+  }
+
+  function startTask(id, gold, exp) {
+    let date = new Date();
+    date = new Date(date.getTime() + tasksList[id].time*1000).getTime();
+    let newPlayer = player;
+
+    newPlayer.task.isStarted = true;
+    newPlayer.task.isFinished = false;
+    newPlayer.task.isCalculated = false;
+    newPlayer.task.endTime = date;
+    newPlayer.task.gold = [gold];
+    newPlayer.task.exp = [exp];
+
+    updatePlayer(newPlayer)
+  }
+
+  function calculateTask() {
+    console.log("calculating")
+    if(isTaskFinished()) {
+      let newPlayer = player;
+      newPlayer.task.isStarted = false;
+      newPlayer.task.isCalculated = true;
+      newPlayer.task.isTasksIdSelected = false;
+      setMeetingRoomAlert('');
+      Number.isInteger(newPlayer.task.gold[0]) ?
+        newPlayer.gold = newPlayer.gold + newPlayer.task.gold[0] :
+        newPlayer.gold = newPlayer.gold + 1;
+      Number.isInteger(newPlayer.task.exp[0]) ?
+        newPlayer.exp = newPlayer.exp + newPlayer.task.exp[0] :
+        newPlayer.exp = newPlayer.exp + 1;
+      updatePlayer(newPlayer)
+    }
+  }
+
+
+
+  //MeetingRoom end
+
 
   return (
     isPlayerDataLoaded ?
       <div className="gameContainer">
         <div className="GameMenu">
-          <GameMenu onClick={(name) => setActualGamePageName(name)} onClickLogout={() => props.onClickLogout()}/>
+          <GameMenu onClick={(name) => setActualGamePageName(name)}
+                    onClickLogout={() => props.onClickLogout()}
+                    meetingRoomAlert={meetingRoomAlert}/>
         </div>
         <div className="GamePage">
           <GameHeader player={player}/>
