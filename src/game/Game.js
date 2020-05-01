@@ -71,7 +71,7 @@ function Game(props) {
     } else if (actualGamePageName==="MeetingRoom") {
       return <MeetingRoom tasksList={tasksList}
                           player={player}
-                          updatePlayer={(player) => updatePlayer(player)}
+                          updatePlayer={player => updatePlayer(player)}
                           calculateTask={() => calculateTask()}
                           time={time}
                           startTask = {(id, gold, exp) => startTask(id, gold, exp)}/>
@@ -105,7 +105,7 @@ function Game(props) {
       const endTime = player.task.endTime;
       const currentTime = new Date().getTime();
       const secondsToEnd = Math.round((endTime - currentTime)/1000);
-      counter(secondsToEnd);
+      setTime(secondsToEnd);
       return endTime < currentTime
     }
     return true
@@ -127,18 +127,6 @@ function Game(props) {
     return () => clearInterval(interval);
   }, [player, finishTask]);
 
-  function counter(time) {
-    let m = Math.floor(time/60);
-    let s = Math.round(time%60);
-    let min = '';
-    let sek = '';
-    m < 0 && (m = 0);
-    s < 0 && (s = 0);
-    m < 10 ? min = '0'+m : min = m;
-    s < 10 ? sek = '0'+s : sek = s;
-    setTime(min + ":" + sek);
-  }
-
   function startTask(id, gold, exp) {
     let date = new Date();
     date = new Date(date.getTime() + tasksList[id].time*1000).getTime();
@@ -148,6 +136,7 @@ function Game(props) {
     newPlayer.task.isFinished = false;
     newPlayer.task.isCalculated = false;
     newPlayer.task.endTime = date;
+    newPlayer.task.taskDuration = tasksList[id].time;
     newPlayer.task.gold = [gold];
     newPlayer.task.exp = [exp];
 

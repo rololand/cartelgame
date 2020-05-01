@@ -2,14 +2,32 @@ import React from 'react';
 import TasksContainer from './TasksContainer.js'
 
 function MeetingRoom(props) {
-
+  function counter(time) {
+    let m = Math.floor(time/60);
+    let s = Math.round(time%60);
+    let min = '';
+    let sek = '';
+    m < 0 && (m = 0);
+    s < 0 && (s = 0);
+    m < 10 ? min = '0'+m : min = m;
+    s < 10 ? sek = '0'+s : sek = s;
+    return (min + ":" + sek);
+  }
 
   function pageSelector() {
     if(props.player.task.isStarted) {
       if(props.player.task.isFinished)
         return <div><button onClick={() => props.calculateTask()}>Calculate Task</button></div>
       else
-        return <div>{props.time}</div>
+        return (
+          <div>
+            {counter(props.time)} <br />
+            <progress value={props.player.task.taskDuration - props.time}
+                      max={props.player.task.taskDuration}>
+
+            </progress>
+          </div>
+        )
     } else {
       if (!props.player.task.isTasksIdSelected)
         selectTasksId();
