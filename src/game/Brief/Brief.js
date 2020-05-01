@@ -1,6 +1,9 @@
 import React from 'react';
 import './Brief.css';
 
+import statsNamesPL from './../../utils/statsNamesPL.js'
+import statsNamesEN from './../../utils/statsNamesEN.js'
+
 import AddStatsButton from './AddStatsButton.js';
 import EquipmentCard from './EquipmentCard.js';
 import AvatarCard from './AvatarCard.js';
@@ -9,7 +12,6 @@ function Brief(props) {
 
   function calculateStatsAllEquipments() {
     const equipmentNames = ["head", "body", "legs", "foots", "ammo", "palms", "finger", "neck", "amulet"];
-    const statsNamesEN = ["strength", "dexterity", "stamina", "intelligence", "luck", "armor"];
     const newPlayer = props.player;
     const equipments = props.player.equipment;
     let equipmentStats = {}
@@ -58,9 +60,6 @@ function Brief(props) {
     }
   }
 
-
-    const statsNamesPL = ["siła", "zręczność", "wytrzymałość", "inteligencja", "szczęście", "pancerz"];
-    const statsNamesEN = ["strength", "dexterity", "stamina", "intelligence", "luck", "armor"];
     const i = [0, 1, 2, 3, 4];
     const blankEquipment = {
       name: '',
@@ -78,26 +77,67 @@ function Brief(props) {
 
     return (
       <div id="Brief">
-        <div className="briefRow">
-          <div className="equipment">
-            <div>
-              <EquipmentCard equipment={props.player.equipment.head} />
-              <EquipmentCard equipment={props.player.equipment.body} />
-              <EquipmentCard equipment={props.player.equipment.legs} />
-              <EquipmentCard equipment={props.player.equipment.foots} />
+        <div className="row">
+          <div>
+            <div className="row">
+              <div>
+                {props.player.equipment.head ?
+                  <EquipmentCard equipment={props.player.equipment.head} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+                {props.player.equipment.body ?
+                  <EquipmentCard equipment={props.player.equipment.body} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+                {props.player.equipment.legs ?
+                  <EquipmentCard equipment={props.player.equipment.legs} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+                {props.player.equipment.foots ?
+                  <EquipmentCard equipment={props.player.equipment.foots} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+              </div>
+              <div>
+                <AvatarCard avatar={props.player.avatar} />
+              </div>
+              <div>
+                {props.player.equipment.palms ?
+                  <EquipmentCard equipment={props.player.equipment.palms} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+                {props.player.equipment.finger ?
+                  <EquipmentCard equipment={props.player.equipment.finger} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+                {props.player.equipment.neck ?
+                  <EquipmentCard equipment={props.player.equipment.neck} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+                {props.player.equipment.amulet ?
+                  <EquipmentCard equipment={props.player.equipment.amulet} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+              </div>
             </div>
-            <div>
-              <AvatarCard avatar={props.player.avatar} />
-              <EquipmentCard equipment={props.player.equipment.ammo} />
+            <div className="row">
+              <div className="row">
+                {props.player.equipment.ammo ?
+                  <EquipmentCard equipment={props.player.equipment.ammo} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+                {props.player.equipment.bullet ?
+                  <EquipmentCard equipment={props.player.equipment.bullet} /> :
+                  <EquipmentCard equipment={blankEquipment} />
+                }
+              </div>
+              <div className="row">
+                flakony
+              </div>
             </div>
-            <div>
-              <EquipmentCard equipment={props.player.equipment.palms} />
-              <EquipmentCard equipment={props.player.equipment.finger} />
-              <EquipmentCard equipment={props.player.equipment.neck} />
-              <EquipmentCard equipment={props.player.equipment.amulet} />
-            </div>
+
           </div>
-          <div className="backpack">
+          <div className="backpack row">
             <div>
             {i.map(i =>
               props.player.backpack[i] ?
@@ -116,7 +156,7 @@ function Brief(props) {
         </div>
 
         {statsNamesEN.map((statName, index)=>
-          <div key={statsNamesPL[index]} className="statsContainer">
+          <div key={statsNamesPL[index]} className="row">
             <div className="statsName">
               {statsNamesPL[index]}: {props.player.stats[statName]} + {props.player.statsAllEquipments[statName]}
             </div>

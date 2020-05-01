@@ -1,5 +1,6 @@
 import React from 'react';
 import TasksContainer from './TasksContainer.js'
+import getRandomInt from './../../utils/getRandomInt.js'
 
 function MeetingRoom(props) {
   function counter(time) {
@@ -24,7 +25,6 @@ function MeetingRoom(props) {
             {counter(props.time)} <br />
             <progress value={props.player.task.taskDuration - props.time}
                       max={props.player.task.taskDuration}>
-
             </progress>
           </div>
         )
@@ -37,12 +37,6 @@ function MeetingRoom(props) {
                             gold={props.player.task.gold}
                             exp={props.player.task.exp}/>
     }
-  }
-
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   function selectTasksId() {

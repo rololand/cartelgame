@@ -6,28 +6,11 @@
   padding: 5px;
 }
 
-.statsContainer {
-  display: flex;
-  flex-direction: row;
-}
-
 .statsName {
   width: 150px;
-}
-
-.briefRow {
-  display: flex;
-  flex-direction: row;
-}
-
-.equipment {
-  display: flex;
-  flex-direction: row;
 }
 .backpack {
   margin-left: 5px;
   border: solid 1px;
   padding: 5px;
-  display: flex;
-  flex-direction: row;
 }

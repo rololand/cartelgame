@@ -4,7 +4,7 @@ import './TasksContainer.css';
 
 function TasksContainer(props) {
   return (
-    <div className="TasksContainer">
+    <div className="TasksContainer row">
       <TaskCard startTask={props.startTask.bind(this)}
                 task={props.tasksList[props.selectedTasksList[0]]}
                 gold={props.gold[0]}
