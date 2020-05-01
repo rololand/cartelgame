@@ -10,31 +10,6 @@ import AvatarCard from './AvatarCard.js';
 
 function Brief(props) {
 
-  function calculateStatsAllEquipments() {
-    const equipmentNames = ["head", "body", "legs", "foots", "ammo", "palms", "finger", "neck", "amulet"];
-    const newPlayer = props.player;
-    const equipments = props.player.equipment;
-    let equipmentStats = {}
-    const newStatsAllEquipments = {
-      strength: 0,
-      dexterity: 0,
-      stamina: 0,
-      intelligence: 0,
-      luck: 0,
-      armor: 0
-    }
-
-    for(var name of equipmentNames) {
-        equipmentStats = equipments[name].stats;
-        for(var statName of statsNamesEN) {
-          newStatsAllEquipments[statName] += equipmentStats[statName]
-        }
-    }
-
-    newPlayer.statsAllEquipments = newStatsAllEquipments;
-    props.updatePlayer(newPlayer);
-  }
-
   function claculatePointCost(statName) {
     const statValue = props.player.stats[statName];
     const pointCost = (statValue + 1) * 10;
@@ -141,15 +116,15 @@ function Brief(props) {
             <div>
             {i.map(i =>
               props.player.backpack[i] ?
-              <EquipmentCard equipment={props.player.backpack[i]} /> :
-              <EquipmentCard equipment={blankEquipment} />
+              <EquipmentCard key={i} equipment={props.player.backpack[i]} /> :
+              <EquipmentCard key={i} equipment={blankEquipment} />
             )}
             </div>
             <div>
             {i.map(i =>
               props.player.backpack[i+5] ?
-              <EquipmentCard equipment={props.player.backpack[i+5]} /> :
-              <EquipmentCard equipment={blankEquipment} />
+              <EquipmentCard key={i+5} equipment={props.player.backpack[i+5]} /> :
+              <EquipmentCard key={i+5} equipment={blankEquipment} />
             )}
             </div>
           </div>

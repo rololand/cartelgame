@@ -17,6 +17,8 @@ import Team from './Team.js';
 import MailBox from './MailBox.js';
 import Evaluation from './Evaluation.js';
 
+import statsNamesEN from './../utils/statsNamesEN.js'
+
 function Game(props) {
 
   const [actualGamePageName, setActualGamePageName] = useState("Brief");
@@ -51,6 +53,32 @@ function Game(props) {
         console.log('Error: ' + err);
       });
 
+  }
+
+  function calculateStatsAllEquipments() {
+    const equipmentNames = ["head", "body", "legs", "foots", "ammo", "bullet", "palms", "finger", "neck", "amulet"];
+    const newPlayer = props.player;
+    const equipments = props.player.equipment;
+    let equipmentStats = {}
+    const newStatsAllEquipments = {
+      shooting: 0,
+      stamina: 0,
+      intelligence: 0,
+      flair: 0,
+      agility: 0,
+      luck: 0,
+      armor: 0
+    }
+
+    for(var name of equipmentNames) {
+        equipmentStats = equipments[name].stats;
+        for(var statName of statsNamesEN) {
+          newStatsAllEquipments[statName] += equipmentStats[statName]
+        }
+    }
+
+    newPlayer.statsAllEquipments = newStatsAllEquipments;
+    props.updatePlayer(newPlayer);
   }
 
   function getTasksList() {

@@ -30,6 +30,9 @@ app.use('/heros', herosRouter);
 const tasksRouter = require('./routes/tasks.js');
 app.use('/tasks', tasksRouter);
 
+const itemsRouter = require('./routes/items.js');
+app.use('/items', itemsRouter);
+
 app.use(express.static('public'))
 
 app.listen(port, () => {

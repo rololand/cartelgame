@@ -30,7 +30,7 @@ function MeetingRoom(props) {
         )
     } else {
       if (!props.player.task.isTasksIdSelected)
-        selectTasksId();
+        selectTasks();
       return <TasksContainer startTask={props.startTask.bind(this)}
                             tasksList={props.tasksList}
                             selectedTasksList={props.player.task.selectedTasksList}
@@ -39,7 +39,7 @@ function MeetingRoom(props) {
     }
   }
 
-  function selectTasksId() {
+  function selectTasks() {
     let newPlayer = props.player;
 
     let id1 = getRandomInt(0, props.tasksList.length);
@@ -62,6 +62,7 @@ function MeetingRoom(props) {
       newGold[i] = newGold[i] * lvl * random;
       newExp[i] = newExp[i] * lvl * (time[i] - random);
     }
+
     newPlayer.task.isTasksIdSelected = true;
     newPlayer.task.selectedTasksList = [id1, id2, id3];
     newPlayer.task.gold = newGold;

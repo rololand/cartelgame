@@ -1,3 +1,9 @@
-const statsNamesEN = ["strength", "dexterity", "stamina", "intelligence", "luck", "armor"];
+const statsNamesEN = ["shooting",
+                      "stamina",
+                      "intelligence",
+                      "flair",
+                      "agility",
+                      "luck",
+                      "armor"];
 
 export default statsNamesEN
