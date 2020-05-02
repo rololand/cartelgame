@@ -17,18 +17,20 @@ import Team from './Team.js';
 import MailBox from './MailBox.js';
 import Evaluation from './Evaluation.js';
 
-import statsNamesEN from './../utils/statsNamesEN.js'
+import getNewItem from './../utils/getNewItem.js';
 
 function Game(props) {
 
   const [actualGamePageName, setActualGamePageName] = useState("Brief");
   const [player, setPlayer] = useState({});
-  const [tasksList, setTaskList] = useState([]);
+  const [tasksList, setTasksList] = useState([]);
+  const [itemsList, setItemsList] = useState([]);
   const [isPlayerDataLoaded, setPlayerDataLoaded] = useState(false);
 
   useEffect(() => {
     getPlayer();
     getTasksList();
+    getItemsList();
   }, []);
 
   function getPlayer() {
@@ -55,37 +57,22 @@ function Game(props) {
 
   }
 
-  function calculateStatsAllEquipments() {
-    const equipmentNames = ["head", "body", "legs", "foots", "ammo", "bullet", "palms", "finger", "neck", "amulet"];
-    const newPlayer = props.player;
-    const equipments = props.player.equipment;
-    let equipmentStats = {}
-    const newStatsAllEquipments = {
-      shooting: 0,
-      stamina: 0,
-      intelligence: 0,
-      flair: 0,
-      agility: 0,
-      luck: 0,
-      armor: 0
-    }
-
-    for(var name of equipmentNames) {
-        equipmentStats = equipments[name].stats;
-        for(var statName of statsNamesEN) {
-          newStatsAllEquipments[statName] += equipmentStats[statName]
-        }
-    }
-
-    newPlayer.statsAllEquipments = newStatsAllEquipments;
-    props.updatePlayer(newPlayer);
-  }
-
   function getTasksList() {
     const url  = 'http://localhost:5000/tasks/';
     axios.get(url)
       .then(tasks => {
-        setTaskList(tasks.data[0].tasksList)
+        setTasksList(tasks.data[0].tasksList)
+      })
+      .catch(err => {
+        console.log('Error: ' + err);
+      });
+  }
+
+  function getItemsList() {
+    const url  = 'http://localhost:5000/items/';
+    axios.get(url)
+      .then(items => {
+        setItemsList(items.data[0].itemsList)
       })
       .catch(err => {
         console.log('Error: ' + err);
@@ -98,6 +85,7 @@ function Game(props) {
                     updatePlayer={(player) => updatePlayer(player)}/>
     } else if (actualGamePageName==="MeetingRoom") {
       return <MeetingRoom tasksList={tasksList}
+                          getNewItem = {()=> getNewItem(itemsList, player.lvl)}
                           player={player}
                           updatePlayer={player => updatePlayer(player)}
                           calculateTask={() => calculateTask()}
@@ -172,7 +160,6 @@ function Game(props) {
   }
 
   function calculateTask() {
-    console.log("calculating")
     if(isTaskFinished()) {
       let newPlayer = player;
       newPlayer.task.isStarted = false;
@@ -185,11 +172,18 @@ function Game(props) {
       Number.isInteger(newPlayer.task.exp[0]) ?
         newPlayer.exp = newPlayer.exp + newPlayer.task.exp[0] :
         newPlayer.exp = newPlayer.exp + 1;
+      if(newPlayer.task.item) {
+        addEquipmentToBackpack(newPlayer.task.item);
+      }
       updatePlayer(newPlayer)
     }
   }
 
-
+  function addEquipmentToBackpack(equipment) {
+    if(player.backpack.length < 10) {
+      player.backpack.push(equipment);
+    }
+  }
 
   //MeetingRoom end
 

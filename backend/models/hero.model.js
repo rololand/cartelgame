@@ -42,6 +42,10 @@ const heroSchema = new Schema({
     type: Object,
     required: true
   },
+  backpack: {
+    type: Array,
+    required: true
+  },
   task: {
     type: Object,
     required: true

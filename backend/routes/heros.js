@@ -52,6 +52,7 @@ router.route('/update/:id').post((req, res) => {
       hero.stats = req.body.stats;
       hero.statsAllEquipments = req.body.statsAllEquipments;
       hero.equipment = req.body.equipment;
+      hero.backpack = req.body.backpack;
       hero.task = req.body.task;
       hero.avatar = req.body.avatar;
 

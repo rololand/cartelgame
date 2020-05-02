@@ -3,14 +3,15 @@ import './EquipmentCard.css';
 import statsNamesPL from './../../utils/statsNamesPL.js';
 import statsNamesEN from './../../utils/statsNamesEN.js';
 
-function EquipmentCard(props) {
+function BackpackCard(props) {
   const [isPopUpStats, setIsPopUpStats] = useState(false);
   const url = 'http://localhost:3000/db/items/' + props.equipment.imgUrl;
 
   return (
-    <div className="equipmentCard">
-      <div  onMouseEnter={()=>setIsPopUpStats(true)}
-            onMouseLeave={()=>setIsPopUpStats(false)}>
+    <div  className="equipmentCard"
+          onMouseEnter={()=>setIsPopUpStats(true)}
+          onMouseLeave={()=>setIsPopUpStats(false)}>
+      <div>
         <img src={url} alt={''}/>
       </div>
       {isPopUpStats && (props.equipment.name !== '') && (
@@ -27,10 +28,13 @@ function EquipmentCard(props) {
             </div>
           )}
           Wartość: {props.equipment.price}
+          <div>
+            <button onClick={() => props.dressEquipment(props.equipment, props.id)}>zaloz</button>
+          </div>
         </div>
       )}
     </div>
   )
 }
 
-export default EquipmentCard;
+export default BackpackCard;

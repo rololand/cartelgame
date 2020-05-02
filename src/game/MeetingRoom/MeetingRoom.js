@@ -1,6 +1,8 @@
 import React from 'react';
 import TasksContainer from './TasksContainer.js'
 import getRandomInt from './../../utils/getRandomInt.js'
+import getRandomFloat from './../../utils/getRandomFloat.js'
+import statsNamesEN from './../../utils/statsNamesEN.js'
 
 function MeetingRoom(props) {
   function counter(time) {
@@ -18,7 +20,15 @@ function MeetingRoom(props) {
   function pageSelector() {
     if(props.player.task.isStarted) {
       if(props.player.task.isFinished)
-        return <div><button onClick={() => props.calculateTask()}>Calculate Task</button></div>
+        return (
+          <div>
+            Złoto: {props.player.task.gold} <br />
+            Exp: {props.player.task.exp} <br />
+            Item name: {props.player.task.item ? props.player.task.item.name : ''}<br />
+            Item description: {props.player.task.item ? props.player.task.item.description : ''}<br />
+            <button onClick={() => props.calculateTask()}>Calculate Task</button>
+          </div>
+        )
       else
         return (
           <div>
@@ -63,6 +73,11 @@ function MeetingRoom(props) {
       newExp[i] = newExp[i] * lvl * (time[i] - random);
     }
 
+    if(getRandomInt(1, 100) < 90) {
+      newPlayer.task.item = props.getNewItem();
+    } else {
+      newPlayer.task.item = {};
+    }
     newPlayer.task.isTasksIdSelected = true;
     newPlayer.task.selectedTasksList = [id1, id2, id3];
     newPlayer.task.gold = newGold;
