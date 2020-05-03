@@ -25,13 +25,15 @@ function Game(props) {
   const [player, setPlayer] = useState({});
   const [tasksList, setTasksList] = useState([]);
   const [itemsList, setItemsList] = useState([]);
+  const [lvlsList, setLvlsList] = useState([]);
   const [isPlayerDataLoaded, setPlayerDataLoaded] = useState(false);
-  const [isNextLvlPopUp, setNextLvlPopUp] = useState(true);
+  const [isNextLvlPopUp, setNextLvlPopUp] = useState(false);
 
   useEffect(() => {
     getPlayer();
     getTasksList();
     getItemsList();
+    getLvlsList();
   }, []);
 
   function getPlayer() {
@@ -47,10 +49,19 @@ function Game(props) {
   }
 
   function updatePlayer(player) {
+    let isLvlUp = false;
+    while(player.exp > player.expNextLvl) {
+      isLvlUp = true;
+      player.lvl += 1;
+      player.exp -= player.expNextLvl;
+      player.expNextLvl = lvlsList[player.lvl];
+    }
+
     const url  = 'http://localhost:5000/heros/update/' + player._id;
     axios.post(url, player)
       .then((player) => {
         setPlayer(player.data)
+        isLvlUp && setNextLvlPopUp(true);
       })
       .catch(err => {
         console.log('Error: ' + err);
@@ -74,6 +85,17 @@ function Game(props) {
     axios.get(url)
       .then(items => {
         setItemsList(items.data[0].itemsList)
+      })
+      .catch(err => {
+        console.log('Error: ' + err);
+      });
+  }
+
+  function getLvlsList() {
+    const url  = 'http://localhost:5000/lvls/';
+    axios.get(url)
+      .then(lvls => {
+        setLvlsList(lvls.data[0].lvlsList)
       })
       .catch(err => {
         console.log('Error: ' + err);

@@ -33,6 +33,9 @@ app.use('/tasks', tasksRouter);
 const itemsRouter = require('./routes/items.js');
 app.use('/items', itemsRouter);
 
+const lvlsRouter = require('./routes/lvls.js');
+app.use('/lvls', lvlsRouter);
+
 app.use(express.static('public'))
 
 app.listen(port, () => {
