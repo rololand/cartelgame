@@ -167,15 +167,17 @@ function Brief(props) {
       </div>
 
       {statsNamesEN.map((statName, index)=>
-        <div key={statsNamesPL[index]} className="row">
-          <div className="statsName">
-            {statsNamesPL[index]}: {props.player.stats[statName]} + {props.player.statsAllEquipments[statName]}
+        statName !== "armor" && (
+          <div key={statsNamesPL[index]} className="row">
+            <div className="statsName">
+              {statsNamesPL[index]}: {props.player.stats[statName]} + {props.player.statsAllEquipments[statName]}
+            </div>
+            <AddStatsButton onClick={(statName) => addStatsPoint(statName)}
+                            statName={statName}
+                            cost={claculatePointCost(statName)}
+                            isDisabled={!isEnoughGoldToBuyStatsPoint(statName)}/><br />
           </div>
-          <AddStatsButton onClick={(statName) => addStatsPoint(statName)}
-                          statName={statName}
-                          cost={claculatePointCost(statName)}
-                          isDisabled={!isEnoughGoldToBuyStatsPoint(statName)}/><br />
-        </div>
+        )
       )}
     </div>
   )

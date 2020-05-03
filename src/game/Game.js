@@ -26,6 +26,7 @@ function Game(props) {
   const [tasksList, setTasksList] = useState([]);
   const [itemsList, setItemsList] = useState([]);
   const [isPlayerDataLoaded, setPlayerDataLoaded] = useState(false);
+  const [isNextLvlPopUp, setNextLvlPopUp] = useState(true);
 
   useEffect(() => {
     getPlayer();
@@ -190,16 +191,26 @@ function Game(props) {
 
   return (
     isPlayerDataLoaded ?
-      <div className="gameContainer">
-        <div className="GameMenu">
-          <GameMenu onClick={(name) => setActualGamePageName(name)}
-                    onClickLogout={() => props.onClickLogout()}
-                    meetingRoomAlert={meetingRoomAlert}/>
+      <div  className="popupContainer"
+            onClick={() => setNextLvlPopUp(false)}>
+        <div className="gameContainer">
+          <div className="GameMenu">
+            <GameMenu onClick={(name) => setActualGamePageName(name)}
+                      onClickLogout={() => props.onClickLogout()}
+                      meetingRoomAlert={meetingRoomAlert}/>
+          </div>
+          <div className="GamePage">
+            <GameHeader player={player}/>
+            {selectGamePage()}
+          </div>
         </div>
-        <div className="GamePage">
-          <GameHeader player={player}/>
-          {selectGamePage()}
-        </div>
+        {isNextLvlPopUp && (
+          <div className="popup">
+            Gratulacje <br />
+            Osiągnięto następny poziom! <br />
+            Aktualny poziom: {player.lvl}
+          </div>
+        )}
       </div> :
       <div>
         loading page
