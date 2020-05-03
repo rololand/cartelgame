@@ -1,6 +1,6 @@
 import statsNamesEN from './statsNamesEN.js';
 
-function getStatsEquipment(equipments) {
+function getStatsAllEquipments(equipments) {
   const equipmentNames = ["head", "body", "legs", "foots", "ammo", "bullet", "palms", "finger", "neck", "amulet"];
   let equipmentStats = {}
   const newStatsAllEquipments = {
@@ -25,4 +25,4 @@ function getStatsEquipment(equipments) {
   return newStatsAllEquipments;
 }
 
-export default getStatsEquipment
+export default getStatsAllEquipments

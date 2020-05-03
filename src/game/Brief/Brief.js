@@ -4,7 +4,7 @@ import './Brief.css';
 import statsNamesPL from './../../utils/statsNamesPL.js';
 import statsNamesEN from './../../utils/statsNamesEN.js';
 import blankEquipment from './../../utils/blankEquipment.js';
-import getStatsEquipment from './../../utils/getStatsEquipment.js';
+import getStatsAllEquipments from './../../utils/getStatsAllEquipments.js';
 
 import AddStatsButton from './AddStatsButton.js';
 import EquipmentCard from './EquipmentCard.js';
@@ -59,8 +59,63 @@ function Brief(props) {
       newPlayer.equipment[what] = equipment;
       newPlayer.backpack = deleteElementId(props.player.backpack, id);
     }
-    newPlayer.statsAllEquipments = getStatsEquipment(newPlayer.equipment)
+    newPlayer.statsAllEquipments = getStatsAllEquipments(newPlayer.equipment)
     props.updatePlayer(newPlayer);
+  }
+
+  function undressEquipment(equipment) {
+    const newPlayer = props.player;
+    delete newPlayer.equipment[equipment.what];
+    if(props.player.backpack.length < 10) {
+      props.player.backpack.push(equipment);
+    }
+    console.log(newPlayer);
+    newPlayer.statsAllEquipments = getStatsAllEquipments(newPlayer.equipment)
+    props.updatePlayer(newPlayer);
+  }
+
+  function sellEquipment(equipment, id) {
+    const newPlayer = props.player;
+    newPlayer.gold += equipment.price;
+    if(Number.isInteger(id)) {
+      newPlayer.backpack = deleteElementId(props.player.backpack, id);
+    } else {
+      delete newPlayer.equipment[equipment.what];
+    }
+    newPlayer.statsAllEquipments = getStatsAllEquipments(newPlayer.equipment)
+    props.updatePlayer(newPlayer);
+  }
+
+  function getEquipmentCard(equipment) {
+    if(equipment) {
+      return (
+        <EquipmentCard equipment={equipment}
+          undressEquipment = {undressEquipment.bind(this)}
+          sellEquipment = {sellEquipment.bind(this)}/>
+      )
+    } else {
+      return (
+        <EquipmentCard equipment={blankEquipment}
+          undressEquipment = {undressEquipment.bind(this)}
+          sellEquipment = {sellEquipment.bind(this)}/>
+      )
+    }
+  }
+
+  function getBackpackCard(equipment, i) {
+    if(equipment) {
+      return (
+        <BackpackCard key={i} id={i} equipment={equipment}
+          dressEquipment={dressEquipment.bind(this)}
+          sellEquipment={sellEquipment.bind(this)}/>
+      )
+    } else {
+      return (
+        <BackpackCard key={i} id={i} equipment={blankEquipment}
+          dressEquipment={dressEquipment.bind(this)}
+          sellEquipment={sellEquipment.bind(this)}/>
+      )
+    }
   }
 
   const i = [0, 1, 2, 3, 4];
@@ -71,55 +126,25 @@ function Brief(props) {
         <div>
           <div className="row">
             <div>
-              {props.player.equipment.head ?
-                <EquipmentCard equipment={props.player.equipment.head}/> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
-              {props.player.equipment.body ?
-                <EquipmentCard equipment={props.player.equipment.body} /> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
-              {props.player.equipment.legs ?
-                <EquipmentCard equipment={props.player.equipment.legs} /> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
-              {props.player.equipment.foots ?
-                <EquipmentCard equipment={props.player.equipment.foots} /> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
+              {getEquipmentCard(props.player.equipment.head)}
+              {getEquipmentCard(props.player.equipment.body)}
+              {getEquipmentCard(props.player.equipment.legs)}
+              {getEquipmentCard(props.player.equipment.foots)}
             </div>
             <div>
               <AvatarCard avatar={props.player.avatar} />
             </div>
             <div>
-              {props.player.equipment.palms ?
-                <EquipmentCard equipment={props.player.equipment.palms} /> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
-              {props.player.equipment.finger ?
-                <EquipmentCard equipment={props.player.equipment.finger} /> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
-              {props.player.equipment.neck ?
-                <EquipmentCard equipment={props.player.equipment.neck} /> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
-              {props.player.equipment.amulet ?
-                <EquipmentCard equipment={props.player.equipment.amulet} /> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
+              {getEquipmentCard(props.player.equipment.palms)}
+              {getEquipmentCard(props.player.equipment.finger)}
+              {getEquipmentCard(props.player.equipment.neck)}
+              {getEquipmentCard(props.player.equipment.amulet)}
             </div>
           </div>
           <div className="row">
             <div className="row">
-              {props.player.equipment.ammo ?
-                <EquipmentCard equipment={props.player.equipment.ammo} /> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
-              {props.player.equipment.bullet ?
-                <EquipmentCard equipment={props.player.equipment.bullet} /> :
-                <EquipmentCard equipment={blankEquipment} />
-              }
+              {getEquipmentCard(props.player.equipment.ammo)}
+              {getEquipmentCard(props.player.equipment.bullet)}
             </div>
             <div className="row">
               flakony
@@ -130,20 +155,12 @@ function Brief(props) {
         <div className="backpack row">
           <div>
           {i.map(i =>
-            props.player.backpack[i] ?
-            <BackpackCard key={i} id={i} equipment={props.player.backpack[i]}
-              dressEquipment={dressEquipment.bind(this)}/> :
-            <BackpackCard key={i} id={i} equipment={blankEquipment}
-            dressEquipment={dressEquipment.bind(this)}/>
+            getBackpackCard(props.player.backpack[i], i)
           )}
           </div>
           <div>
           {i.map(i =>
-            props.player.backpack[i+5] ?
-            <BackpackCard key={i+5} id={i+5} equipment={props.player.backpack[i+5]}
-              dressEquipment={dressEquipment.bind(this)}/> :
-            <BackpackCard key={i} id={i} equipment={blankEquipment}
-            dressEquipment={dressEquipment.bind(this)}/>
+            getBackpackCard(props.player.backpack[i+5], i+5)
           )}
           </div>
         </div>

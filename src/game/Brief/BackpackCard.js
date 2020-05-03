@@ -30,6 +30,7 @@ function BackpackCard(props) {
           Wartość: {props.equipment.price}
           <div>
             <button onClick={() => props.dressEquipment(props.equipment, props.id)}>zaloz</button>
+            <button onClick={() => props.sellEquipment(props.equipment, props.id)}>sprzedaj</button>
           </div>
         </div>
       )}

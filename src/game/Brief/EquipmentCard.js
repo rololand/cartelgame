@@ -8,9 +8,10 @@ function EquipmentCard(props) {
   const url = 'http://localhost:3000/db/items/' + props.equipment.imgUrl;
 
   return (
-    <div className="equipmentCard">
-      <div  onMouseEnter={()=>setIsPopUpStats(true)}
-            onMouseLeave={()=>setIsPopUpStats(false)}>
+    <div  className="equipmentCard"
+          onMouseEnter={()=>setIsPopUpStats(true)}
+          onMouseLeave={()=>setIsPopUpStats(false)}>
+      <div>
         <img src={url} alt={''}/>
       </div>
       {isPopUpStats && (props.equipment.name !== '') && (
@@ -27,6 +28,10 @@ function EquipmentCard(props) {
             </div>
           )}
           Wartość: {props.equipment.price}
+          <div>
+            <button onClick={() => props.undressEquipment(props.equipment)}>zdejmij</button>
+            <button onClick={() => props.sellEquipment(props.equipment)}>sprzedaj</button>
+          </div>
         </div>
       )}
     </div>

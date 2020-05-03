@@ -1,8 +1,6 @@
 import React from 'react';
 import TasksContainer from './TasksContainer.js'
 import getRandomInt from './../../utils/getRandomInt.js'
-import getRandomFloat from './../../utils/getRandomFloat.js'
-import statsNamesEN from './../../utils/statsNamesEN.js'
 
 function MeetingRoom(props) {
   function counter(time) {
