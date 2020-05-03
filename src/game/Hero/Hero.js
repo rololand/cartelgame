@@ -1,5 +1,5 @@
 import React from 'react';
-import './Brief.css';
+import './Hero.css';
 
 import statsNamesPL from './../../utils/statsNamesPL.js';
 import statsNamesEN from './../../utils/statsNamesEN.js';
@@ -11,7 +11,7 @@ import EquipmentCard from './EquipmentCard.js';
 import BackpackCard from './BackpackCard.js';
 import AvatarCard from './AvatarCard.js';
 
-function Brief(props) {
+function Hero(props) {
 
   function claculatePointCost(statName) {
     const statValue = props.player.stats[statName];
@@ -33,7 +33,6 @@ function Brief(props) {
     if(isEnoughGoldToBuyStatsPoint(statName)) {
       newPlayer.gold = newPlayer.gold - claculatePointCost(statName);
       newPlayer.stats[statName] = newPlayer.stats[statName] + 1;
-
       props.updatePlayer(newPlayer);
     }
   }
@@ -59,7 +58,7 @@ function Brief(props) {
       newPlayer.equipment[what] = equipment;
       newPlayer.backpack = deleteElementId(props.player.backpack, id);
     }
-    newPlayer.statsAllEquipments = getStatsAllEquipments(newPlayer.equipment)
+    newPlayer.statsAllEquipments = getStatsAllEquipments(newPlayer.equipment);
     props.updatePlayer(newPlayer);
   }
 
@@ -121,7 +120,7 @@ function Brief(props) {
   const i = [0, 1, 2, 3, 4];
 
   return (
-    <div id="Brief">
+    <div id="Hero">
       <div className="row">
         <div>
           <div className="row">
@@ -183,4 +182,4 @@ function Brief(props) {
   )
 }
 
-export default Brief;
+export default Hero;

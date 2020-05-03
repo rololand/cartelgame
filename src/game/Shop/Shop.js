@@ -1,14 +1,14 @@
 import React from 'react';
 
-function OpenSpace () {
+function Shop () {
 
 
   return (
     <div>
-      OpenSpace
+      Shop
     </div>
   )
 
 }
 
-export default OpenSpace;
+export default Shop;

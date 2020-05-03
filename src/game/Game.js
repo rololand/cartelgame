@@ -5,23 +5,23 @@ import './Game.css';
 import GameMenu from './GameMenu.js';
 import GameHeader from './GameHeader.js';
 
-import Brief from './Brief/Brief.js';
-import MeetingRoom from './MeetingRoom/MeetingRoom.js';
-import OpenSpace from './OpenSpace.js';
-import Assets from './Assets.js';
-import CoffeeBreak from './CoffeeBreak.js';
-import ItSupport from './ItSupport.js';
-import Market from './Market.js';
-import Office from './Office.js';
-import Team from './Team.js';
-import MailBox from './MailBox.js';
-import Evaluation from './Evaluation.js';
+import Hero from './Hero/Hero.js';
+import City from './City/City.js';
+import Residence from './Residence/Residence.js';
+import Warehouse from './Warehouse/Warehouse.js';
+import Lab from './Lab/Lab.js';
+import Bribes from './Bribes/Bribes.js';
+import Map from './Map/Map.js';
+import Socios from './Socios/Socios.js';
+import Cartel from './Cartel/Cartel.js';
+import MailBox from './MailBox/MailBox.js';
+import Shop from './Shop/Shop.js';
 
 import getNewItem from './../utils/getNewItem.js';
 
 function Game(props) {
 
-  const [actualGamePageName, setActualGamePageName] = useState("Brief");
+  const [actualGamePageName, setActualGamePageName] = useState("Hero");
   const [player, setPlayer] = useState({});
   const [tasksList, setTasksList] = useState([]);
   const [itemsList, setItemsList] = useState([]);
@@ -49,6 +49,7 @@ function Game(props) {
   }
 
   function updatePlayer(player) {
+    console.log("updating");
     let isLvlUp = false;
     while(player.exp > player.expNextLvl) {
       isLvlUp = true;
@@ -103,41 +104,41 @@ function Game(props) {
   }
 
   function selectGamePage() {
-    if (actualGamePageName==="Brief") {
-      return <Brief player={player}
+    if (actualGamePageName==="Hero") {
+      return <Hero player={player}
                     updatePlayer={(player) => updatePlayer(player)}/>
-    } else if (actualGamePageName==="MeetingRoom") {
-      return <MeetingRoom tasksList={tasksList}
+    } else if (actualGamePageName==="City") {
+      return <City tasksList={tasksList}
                           getNewItem = {()=> getNewItem(itemsList, player.lvl)}
                           player={player}
                           updatePlayer={player => updatePlayer(player)}
                           calculateTask={() => calculateTask()}
                           time={time}
                           startTask = {(id, gold, exp) => startTask(id, gold, exp)}/>
-    } else if (actualGamePageName==="OpenSpace") {
-      return <OpenSpace />
-    } else if (actualGamePageName==="ItSupport") {
-      return <ItSupport />
-    } else if (actualGamePageName==="CoffeeBreak") {
-      return <CoffeeBreak />
-    } else if (actualGamePageName==="Assets") {
-      return <Assets />
-    } else if (actualGamePageName==="Market") {
-      return <Market />
-    } else if (actualGamePageName==="Office") {
-      return <Office />
-    } else if (actualGamePageName==="Team") {
-      return <Team />
+    } else if (actualGamePageName==="Residence") {
+      return <Residence />
+    } else if (actualGamePageName==="Bribes") {
+      return <Bribes />
+    } else if (actualGamePageName==="Lab") {
+      return <Lab />
+    } else if (actualGamePageName==="Warehouse") {
+      return <Warehouse />
+    } else if (actualGamePageName==="Map") {
+      return <Map />
+    } else if (actualGamePageName==="Socios") {
+      return <Socios />
+    } else if (actualGamePageName==="Cartel") {
+      return <Cartel />
     } else if (actualGamePageName==="MailBox") {
       return <MailBox />
-    } else if (actualGamePageName==="Evaluation") {
-      return <Evaluation />
+    } else if (actualGamePageName==="Shop") {
+      return <Shop />
     }
   }
 
-  //MeetingRoom start
+  //City start
   const [time, setTime] = useState("00:00");
-  const [meetingRoomAlert, setMeetingRoomAlert] = useState('');
+  const [CityAlert, setCityAlert] = useState('');
 
   const isTaskFinished = React.useCallback(() => {
     if (player.task.isStarted) {
@@ -151,20 +152,22 @@ function Game(props) {
   }, [player])
 
   const finishTask = React.useCallback(() => {
-    if(player.task.isStarted && isTaskFinished()) {
+    if(player.task.isStarted && !player.task.isFinished) {
       let newPlayer = player;
       newPlayer.task.isFinished = true;
-      setMeetingRoomAlert('!!');
+      setCityAlert('!!');
+      console.log("finishTask");
       updatePlayer(newPlayer)
     }
-  }, [isTaskFinished, player])
+  }, [player])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      finishTask();
+      if(isTaskFinished())
+        finishTask();
     }, 1000);
     return () => clearInterval(interval);
-  }, [player, finishTask]);
+  }, [player, finishTask, isTaskFinished]);
 
   function startTask(id, gold, exp) {
     let date = new Date();
@@ -178,8 +181,8 @@ function Game(props) {
     newPlayer.task.taskDuration = tasksList[id].time;
     newPlayer.task.gold = [gold];
     newPlayer.task.exp = [exp];
-
-    updatePlayer(newPlayer)
+    console.log("startTask");
+    updatePlayer(newPlayer);
   }
 
   function calculateTask() {
@@ -188,7 +191,7 @@ function Game(props) {
       newPlayer.task.isStarted = false;
       newPlayer.task.isCalculated = true;
       newPlayer.task.isTasksIdSelected = false;
-      setMeetingRoomAlert('');
+      setCityAlert('');
       Number.isInteger(newPlayer.task.gold[0]) ?
         newPlayer.gold = newPlayer.gold + newPlayer.task.gold[0] :
         newPlayer.gold = newPlayer.gold + 1;
@@ -198,6 +201,7 @@ function Game(props) {
       if(newPlayer.task.item) {
         addEquipmentToBackpack(newPlayer.task.item);
       }
+      console.log("calculateTask")
       updatePlayer(newPlayer)
     }
   }
@@ -208,7 +212,7 @@ function Game(props) {
     }
   }
 
-  //MeetingRoom end
+  //City end
 
 
   return (
@@ -217,9 +221,9 @@ function Game(props) {
             onClick={() => setNextLvlPopUp(false)}>
         <div className="gameContainer">
           <div className="GameMenu">
-            <GameMenu onClick={(name) => setActualGamePageName(name)}
+            <GameMenu onClick={name => setActualGamePageName(name)}
                       onClickLogout={() => props.onClickLogout()}
-                      meetingRoomAlert={meetingRoomAlert}/>
+                      CityAlert={CityAlert}/>
           </div>
           <div className="GamePage">
             <GameHeader player={player}/>

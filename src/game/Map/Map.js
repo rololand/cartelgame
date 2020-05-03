@@ -1,14 +1,14 @@
 import React from 'react';
 
-function Office () {
+function Map () {
 
 
   return (
     <div>
-      Office
+      Map
     </div>
   )
 
 }
 
-export default Office;
+export default Map;

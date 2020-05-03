@@ -1,14 +1,14 @@
 import React from 'react';
 
-function Assets () {
+function Cartel () {
 
 
   return (
     <div>
-      Assets
+      Cartel
     </div>
   )
 
 }
 
-export default Assets;
+export default Cartel;

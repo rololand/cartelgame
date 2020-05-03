@@ -1,14 +1,14 @@
 import React from 'react';
 
-function Evaluation () {
+function Residence () {
 
 
   return (
     <div>
-      Evaluation
+      Residence
     </div>
   )
 
 }
 
-export default Evaluation;
+export default Residence;

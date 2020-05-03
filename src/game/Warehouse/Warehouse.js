@@ -1,14 +1,14 @@
 import React from 'react';
 
-function ItSupport () {
+function Warehouse () {
 
 
   return (
     <div>
-      ItSupport
+      Warehouse
     </div>
   )
 
 }
 
-export default ItSupport;
+export default Warehouse;

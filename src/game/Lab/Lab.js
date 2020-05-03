@@ -1,14 +1,14 @@
 import React from 'react';
 
-function Team () {
+function Lab () {
 
 
   return (
     <div>
-      Team
+      Lab
     </div>
   )
 
 }
 
-export default Team;
+export default Lab;

@@ -1,14 +1,14 @@
 import React from 'react';
 
-function Market () {
+function Socios () {
 
 
   return (
     <div>
-      Market
+      Socios
     </div>
   )
 
 }
 
-export default Market;
+export default Socios;

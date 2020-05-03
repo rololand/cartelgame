@@ -2,7 +2,7 @@ import React from 'react';
 import TasksContainer from './TasksContainer.js'
 import getRandomInt from './../../utils/getRandomInt.js'
 
-function MeetingRoom(props) {
+function City(props) {
   function counter(time) {
     let m = Math.floor(time/60);
     let s = Math.round(time%60);
@@ -29,12 +29,14 @@ function MeetingRoom(props) {
         )
       else
         return (
-          <div>
-            {counter(props.time)} <br />
-            <progress value={props.player.task.taskDuration - props.time}
-                      max={props.player.task.taskDuration}>
-            </progress>
-          </div>
+          Number.isInteger(props.time) && (
+            <div>
+              {counter(props.time)} <br />
+              <progress value={props.player.task.taskDuration - props.time}
+                        max={props.player.task.taskDuration}>
+              </progress>
+            </div>
+          )
         )
     } else {
       if (!props.player.task.isTasksIdSelected)
@@ -80,7 +82,7 @@ function MeetingRoom(props) {
     newPlayer.task.selectedTasksList = [id1, id2, id3];
     newPlayer.task.gold = newGold;
     newPlayer.task.exp = newExp;
-    props.updatePlayer(newPlayer)
+    props.updatePlayer(newPlayer);
   }
 
   return (
@@ -90,4 +92,4 @@ function MeetingRoom(props) {
   )
 }
 
-export default MeetingRoom;
+export default City;
