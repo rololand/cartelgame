@@ -105,16 +105,16 @@ function Game(props) {
 
   function selectGamePage() {
     if (actualGamePageName==="Hero") {
-      return <Hero player={player}
+      return <Hero  player={player}
                     updatePlayer={(player) => updatePlayer(player)}/>
     } else if (actualGamePageName==="City") {
-      return <City tasksList={tasksList}
-                          getNewItem = {()=> getNewItem(itemsList, player.lvl)}
-                          player={player}
-                          updatePlayer={player => updatePlayer(player)}
-                          calculateTask={() => calculateTask()}
-                          time={time}
-                          startTask = {(id, gold, exp) => startTask(id, gold, exp)}/>
+      return <City  tasksList={tasksList}
+                    getNewItem = {()=> getNewItem(itemsList, player.lvl)}
+                    player={player}
+                    updatePlayer={player => updatePlayer(player)}
+                    calculateTask={() => calculateTask()}
+                    time={time}
+                    startTask = {(id, gold, exp) => startTask(id, gold, exp)}/>
     } else if (actualGamePageName==="Residence") {
       return <Residence />
     } else if (actualGamePageName==="Bribes") {
@@ -181,6 +181,7 @@ function Game(props) {
     newPlayer.task.taskDuration = tasksList[id].time;
     newPlayer.task.gold = [gold];
     newPlayer.task.exp = [exp];
+    newPlayer.task.taskId = id;
     console.log("startTask");
     updatePlayer(newPlayer);
   }

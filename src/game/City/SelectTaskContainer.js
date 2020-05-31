@@ -1,10 +1,10 @@
 import React from 'react';
 import TaskCard from './TaskCard.js';
-import './TasksContainer.css';
+import './SelectTaskContainer.css';
 
-function TasksContainer(props) {
+function SelectTaskContainer(props) {
   return (
-    <div className="TasksContainer row">
+    <div className="SelectTaskContainer row">
       <TaskCard startTask={props.startTask.bind(this)}
                 task={props.tasksList[props.selectedTasksList[0]]}
                 gold={props.gold[0]}
@@ -21,4 +21,4 @@ function TasksContainer(props) {
   )
 }
 
-export default TasksContainer;
+export default SelectTaskContainer;

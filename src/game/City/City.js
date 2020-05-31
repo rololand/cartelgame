@@ -1,19 +1,9 @@
 import React from 'react';
-import TasksContainer from './TasksContainer.js'
+import SelectTaskContainer from './SelectTaskContainer.js'
+import ExecuteTaskContainer from './ExecuteTaskContainer.js'
 import getRandomInt from './../../utils/getRandomInt.js'
 
 function City(props) {
-  function counter(time) {
-    let m = Math.floor(time/60);
-    let s = Math.round(time%60);
-    let min = '';
-    let sek = '';
-    m < 0 && (m = 0);
-    s < 0 && (s = 0);
-    m < 10 ? min = '0'+m : min = m;
-    s < 10 ? sek = '0'+s : sek = s;
-    return (min + ":" + sek);
-  }
 
   function pageSelector() {
     if(props.player.task.isStarted) {
@@ -30,22 +20,20 @@ function City(props) {
       else
         return (
           Number.isInteger(props.time) && (
-            <div>
-              {counter(props.time)} <br />
-              <progress value={props.player.task.taskDuration - props.time}
-                        max={props.player.task.taskDuration}>
-              </progress>
-            </div>
+            <ExecuteTaskContainer time={props.time}
+                                  taskDuration={props.player.task.taskDuration}
+                                  imgUrl = {props.tasksList[props.player.task.taskId].imgUrl}
+                                  taskTitle = {props.tasksList[props.player.task.taskId].name}/>
           )
         )
     } else {
       if (!props.player.task.isTasksIdSelected)
         selectTasks();
-      return <TasksContainer startTask={props.startTask.bind(this)}
-                            tasksList={props.tasksList}
-                            selectedTasksList={props.player.task.selectedTasksList}
-                            gold={props.player.task.gold}
-                            exp={props.player.task.exp}/>
+      return <SelectTaskContainer   startTask={props.startTask.bind(this)}
+                                    tasksList={props.tasksList}
+                                    selectedTasksList={props.player.task.selectedTasksList}
+                                    gold={props.player.task.gold}
+                                    exp={props.player.task.exp}/>
     }
   }
 
@@ -69,8 +57,8 @@ function City(props) {
     let idList = [0, 1, 2];
     for(var i of idList) {
       random = getRandomInt(1, time[i]-1);
-      newGold[i] = newGold[i] * lvl * random;
-      newExp[i] = newExp[i] * lvl * (time[i] - random);
+      newGold[i] = Math.floor(newGold[i] * lvl * random / 30);
+      newExp[i] = Math.floor(newExp[i] * lvl * (time[i] - random) / 30);
     }
 
     if(getRandomInt(1, 100) < 90) {

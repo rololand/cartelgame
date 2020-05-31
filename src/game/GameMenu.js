@@ -10,7 +10,7 @@ function GameMenu(props) {
       <div className="menuButtonContainer"><button onClick={() => props.onClick("City")}>Miasto {props.CityAlert}</button></div>
       <div className="menuButtonContainer"><button onClick={() => props.onClick("Residence")}>Willa</button></div>
       <div className="menuButtonContainer"><button onClick={() => props.onClick("Warehouse")}>Magazyn</button></div>
-      <div className="menuButtonContainer"><button onClick={() => props.onClick("Lab")}>Labolatorium</button></div>
+      <div className="menuButtonContainer"><button onClick={() => props.onClick("Lab")}>Laboratorium</button></div>
       <div className="menuButtonContainer"><button onClick={() => props.onClick("Bribes")}>Łapówki</button></div>
       <div className="menuButtonContainer"><button onClick={() => props.onClick("Map")}>Mapa</button></div>
       <div className="menuButtonContainer"><button onClick={() => props.onClick("Socios")}>Socios</button></div>
