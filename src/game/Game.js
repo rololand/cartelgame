@@ -179,6 +179,9 @@ const Game = (props) => {
     newPlayer.task.isCalculated = false;
     newPlayer.task.endTime = date;
     newPlayer.task.taskDuration = tasksList[id].time;
+    newPlayer.task.name = tasksList[id].name;
+    newPlayer.task.description = tasksList[id].description;
+    newPlayer.task.imgUrl = tasksList[id].imgUrl;
     newPlayer.task.gold = [gold];
     newPlayer.task.exp = [exp];
     newPlayer.task.taskId = id;

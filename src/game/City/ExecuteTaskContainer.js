@@ -2,15 +2,15 @@ import React from 'react';
 import displayTime from './../../utils/displayTime.js';
 
 const ExecuteTaskContainer = (props) => {
-  const url = 'http://localhost:3000/db/tasks/' + props.imgUrl;
+  const url = 'http://localhost:3000/db/tasks/' + props.task.imgUrl;
 
   return (
     <div>
-      <h1>{props.taskTitle}</h1>
+      <h1>{props.task.name}</h1>
       <img className="taskCardImg" src={url} alt={''}/><br />
       {displayTime(props.time)} <br />
-      <progress value={props.taskDuration - props.time}
-                max={props.taskDuration}>
+      <progress value={props.task.taskDuration - props.time}
+                max={props.task.taskDuration}>
       </progress>
     </div>
   )

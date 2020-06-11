@@ -1,6 +1,7 @@
 import React from 'react';
 import SelectTaskContainer from './SelectTaskContainer.js'
 import ExecuteTaskContainer from './ExecuteTaskContainer.js'
+import FinishedTaskContainer from './FinishedTaskContainer.js'
 import getRandomInt from './../../utils/getRandomInt.js'
 
 const City = (props) => {
@@ -9,21 +10,14 @@ const City = (props) => {
     if(props.player.task.isStarted) {
       if(props.player.task.isFinished)
         return (
-          <div>
-            Złoto: {props.player.task.gold} <br />
-            Exp: {props.player.task.exp} <br />
-            Item name: {props.player.task.item ? props.player.task.item.name : ''}<br />
-            Item description: {props.player.task.item ? props.player.task.item.description : ''}<br />
-            <button onClick={() => props.calculateTask()}>Calculate Task</button>
-          </div>
+          <FinishedTaskContainer  task={props.player.task}
+                                  calculateTask={props.calculateTask}/>
         )
       else
         return (
           Number.isInteger(props.time) && (
             <ExecuteTaskContainer time={props.time}
-                                  taskDuration={props.player.task.taskDuration}
-                                  imgUrl = {props.tasksList[props.player.task.taskId].imgUrl}
-                                  taskTitle = {props.tasksList[props.player.task.taskId].name}/>
+                                  task={props.player.task}/>
           )
         )
     } else {
@@ -31,9 +25,7 @@ const City = (props) => {
         selectTasks();
       return <SelectTaskContainer   startTask={props.startTask.bind(this)}
                                     tasksList={props.tasksList}
-                                    selectedTasksList={props.player.task.selectedTasksList}
-                                    gold={props.player.task.gold}
-                                    exp={props.player.task.exp}/>
+                                    task={props.player.task}/>
     }
   }
 
