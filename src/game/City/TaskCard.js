@@ -2,7 +2,7 @@ import React from 'react';
 import './TaskCard.css';
 import displayTime from './../../utils/displayTime.js';
 
-function TaskCard(props) {
+const TaskCard = (props) => {
   const url = 'http://localhost:3000/db/tasks/' + props.task.imgUrl;
   return (
     <div className="TaskCard">

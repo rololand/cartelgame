@@ -1,14 +1,12 @@
 import React from 'react';
 
-function Cartel () {
-
+const Cartel = () => {
 
   return (
     <div>
       Cartel
     </div>
   )
-
 }
 
 export default Cartel;

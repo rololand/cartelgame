@@ -3,9 +3,9 @@ import SelectTaskContainer from './SelectTaskContainer.js'
 import ExecuteTaskContainer from './ExecuteTaskContainer.js'
 import getRandomInt from './../../utils/getRandomInt.js'
 
-function City(props) {
+const City = (props) => {
 
-  function pageSelector() {
+  const pageSelector = () => {
     if(props.player.task.isStarted) {
       if(props.player.task.isFinished)
         return (
@@ -37,7 +37,7 @@ function City(props) {
     }
   }
 
-  function selectTasks() {
+  const selectTasks = () => {
     let newPlayer = props.player;
 
     let id1 = getRandomInt(0, props.tasksList.length);

@@ -1,14 +1,12 @@
 import React from 'react';
 
-function Bribes () {
-
+const Bribes = () => {
 
   return (
     <div>
       Bribes
     </div>
   )
-
 }
 
 export default Bribes;

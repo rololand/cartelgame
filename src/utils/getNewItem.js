@@ -3,7 +3,7 @@ import getRandomFloat from './getRandomFloat.js'
 import statsNamesEN from './statsNamesEN.js'
 import getEquipmentPrice from './getEquipmentPrice.js';
 
-function getNewItem(itemsList, playerLvl) {
+const getNewItem = (itemsList, playerLvl) => {
   const id = getRandomInt(0, itemsList.length);
   let newItem = itemsList[id];
   for(let name of statsNamesEN) {

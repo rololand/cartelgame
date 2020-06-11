@@ -1,10 +1,9 @@
 import React from 'react';
 import './GameMenu.css';
 
-function GameMenu(props) {
+const GameMenu = (props) => {
 
   return (
-
     <div className="menuContainer">
       <div className="menuButtonContainer"><button onClick={() => props.onClick("Hero")}>Bohater</button></div>
       <div className="menuButtonContainer"><button onClick={() => props.onClick("City")}>Miasto {props.CityAlert}</button></div>
@@ -20,7 +19,6 @@ function GameMenu(props) {
       <div className="menuButtonContainer"><button onClick={() => props.onClickLogout()}>LogOut</button></div>
     </div>
   )
-
 }
 
 export default GameMenu;

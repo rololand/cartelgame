@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './GameHeader.css';
 
-function GameHeader(props) {
+const GameHeader = (props) => {
   const [isPopUp, setIsPopUp] = useState(false);
   return (
     <div>

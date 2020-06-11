@@ -1,14 +1,12 @@
 import React from 'react';
 
-function MailBox () {
-
+const MailBox = () => {
 
   return (
     <div>
       MailBox
     </div>
   )
-
 }
 
 export default MailBox;

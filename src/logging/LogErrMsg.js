@@ -1,7 +1,6 @@
 import React from 'react';
 
-function LogErrMsg(props) {
-
+const LogErrMsg = (props) => {
 
   return (
     <div>

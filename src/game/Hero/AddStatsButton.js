@@ -1,6 +1,6 @@
 import React from 'react';
 
-function AddStatsButton(props) {
+const AddStatsButton = (props) => {
   return (
     <div>
       <button onClick={() => props.onClick(props.statName)} disabled={props.isDisabled ? true : false}>+</button>

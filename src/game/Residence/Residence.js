@@ -1,14 +1,12 @@
 import React from 'react';
 
-function Residence () {
-
+const Residence = () => {
 
   return (
     <div>
       Residence
     </div>
   )
-
 }
 
 export default Residence;

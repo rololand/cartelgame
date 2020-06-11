@@ -1,14 +1,12 @@
 import React from 'react';
 
-function Warehouse () {
-
+const Warehouse = () => {
 
   return (
     <div>
       Warehouse
     </div>
   )
-
 }
 
 export default Warehouse;

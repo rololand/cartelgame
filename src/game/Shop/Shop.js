@@ -1,14 +1,12 @@
 import React from 'react';
 
-function Shop () {
-
+const Shop = () => {
 
   return (
     <div>
       Shop
     </div>
   )
-
 }
 
 export default Shop;

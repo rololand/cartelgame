@@ -19,7 +19,7 @@ import Shop from './Shop/Shop.js';
 
 import getNewItem from './../utils/getNewItem.js';
 
-function Game(props) {
+const Game = (props) => {
 
   const [actualGamePageName, setActualGamePageName] = useState("Hero");
   const [player, setPlayer] = useState({});
@@ -36,7 +36,7 @@ function Game(props) {
     getLvlsList();
   }, []);
 
-  function getPlayer() {
+  const getPlayer = () => {
     const url  = 'http://localhost:5000/heros/' + props.playerId;
     axios.get(url)
       .then(player => {
@@ -48,7 +48,7 @@ function Game(props) {
       });
   }
 
-  function updatePlayer(player) {
+  const updatePlayer = (player) => {
     console.log("updating");
     let isLvlUp = false;
     while(player.exp > player.expNextLvl) {
@@ -70,7 +70,7 @@ function Game(props) {
 
   }
 
-  function getTasksList() {
+  const getTasksList = () => {
     const url  = 'http://localhost:5000/tasks/';
     axios.get(url)
       .then(tasks => {
@@ -81,7 +81,7 @@ function Game(props) {
       });
   }
 
-  function getItemsList() {
+  const getItemsList = () => {
     const url  = 'http://localhost:5000/items/';
     axios.get(url)
       .then(items => {
@@ -92,7 +92,7 @@ function Game(props) {
       });
   }
 
-  function getLvlsList() {
+  const getLvlsList = () => {
     const url  = 'http://localhost:5000/lvls/';
     axios.get(url)
       .then(lvls => {
@@ -103,7 +103,7 @@ function Game(props) {
       });
   }
 
-  function selectGamePage() {
+  const selectGamePage = () => {
     if (actualGamePageName==="Hero") {
       return <Hero  player={player}
                     updatePlayer={(player) => updatePlayer(player)}/>
@@ -169,7 +169,7 @@ function Game(props) {
     return () => clearInterval(interval);
   }, [player, finishTask, isTaskFinished]);
 
-  function startTask(id, gold, exp) {
+  const startTask = (id, gold, exp) => {
     let date = new Date();
     date = new Date(date.getTime() + tasksList[id].time*1000).getTime();
     let newPlayer = player;
@@ -186,7 +186,7 @@ function Game(props) {
     updatePlayer(newPlayer);
   }
 
-  function calculateTask() {
+  const calculateTask = () => {
     if(isTaskFinished()) {
       let newPlayer = player;
       newPlayer.task.isStarted = false;
@@ -207,7 +207,7 @@ function Game(props) {
     }
   }
 
-  function addEquipmentToBackpack(equipment) {
+  const addEquipmentToBackpack = (equipment) => {
     if(player.backpack.length < 10) {
       player.backpack.push(equipment);
     }

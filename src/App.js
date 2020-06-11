@@ -5,14 +5,14 @@ import Logging from './logging/Logging.js'
 import LogErrMsg from './logging/LogErrMsg.js'
 import Game from './game/Game.js'
 
-function App(props) {
+const App = (props) => {
   const [isUserLogged, setUserLogged] = useState(false);
   const [login, setLogin] = useState("admin");
   const [password, setPassword] = useState("admin");
   const [logErrMsg, setLogErrMsg] = useState("");
   const [playerId, setPlayerId] = useState("");
 
-  function handleLoggingOnClickButton() {
+  const handleLoggingOnClickButton = () => {
     const url  = 'http://localhost:5000/users/findByUsername/' + login;
     axios.get(url)
       .then(user => {
@@ -30,7 +30,7 @@ function App(props) {
       });
   }
 
-  function createHero() {
+  const createHero = () => {
     console.log('create hero..');
     const user = {
       username: 'admin',

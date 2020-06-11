@@ -1,7 +1,6 @@
 import React from 'react';
 
-
-function Logging(props) {
+const Logging = (props) => {
   return (
     <div>
       <input value={props.login} onChange={event => props.handleChangeLogin(event.target.value)}/>

@@ -1,14 +1,12 @@
 import React from 'react';
 
-function Lab () {
-
+const Lab = () => {
 
   return (
     <div>
       Lab
     </div>
   )
-
 }
 
 export default Lab;

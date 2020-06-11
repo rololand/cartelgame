@@ -11,23 +11,23 @@ import EquipmentCard from './EquipmentCard.js';
 import BackpackCard from './BackpackCard.js';
 import AvatarCard from './AvatarCard.js';
 
-function Hero(props) {
+const Hero = (props) => {
 
-  function claculatePointCost(statName) {
+  const claculatePointCost = (statName) => {
     const statValue = props.player.stats[statName];
     const pointCost = (statValue + 1) * 10;
 
     return pointCost
   }
 
-  function isEnoughGoldToBuyStatsPoint(statName) {
+  const isEnoughGoldToBuyStatsPoint = (statName) => {
     const playerGold = props.player.gold;
     const pointCost = claculatePointCost(statName);
 
     return playerGold > pointCost
   }
 
-  function addStatsPoint(statName) {
+  const addStatsPoint = (statName) => {
     const newPlayer = props.player;
 
     if(isEnoughGoldToBuyStatsPoint(statName)) {
@@ -36,7 +36,8 @@ function Hero(props) {
       props.updatePlayer(newPlayer);
     }
   }
-  function deleteElementId(array, id) {
+
+  const deleteElementId = (array, id) => {
     let newArray = []
     array.forEach((item, i) => {
       if(i !== id) {
@@ -46,7 +47,7 @@ function Hero(props) {
     return newArray;
   }
 
-  function dressEquipment(equipment, id) {
+  const dressEquipment = (equipment, id) => {
     const newPlayer = props.player;
     const what = equipment.what;
     if(newPlayer.equipment[what]) {
@@ -62,7 +63,7 @@ function Hero(props) {
     props.updatePlayer(newPlayer);
   }
 
-  function undressEquipment(equipment) {
+  const undressEquipment = (equipment) => {
     const newPlayer = props.player;
     delete newPlayer.equipment[equipment.what];
     if(props.player.backpack.length < 10) {
@@ -73,7 +74,7 @@ function Hero(props) {
     props.updatePlayer(newPlayer);
   }
 
-  function sellEquipment(equipment, id) {
+  const sellEquipment = (equipment, id) => {
     const newPlayer = props.player;
     newPlayer.gold += equipment.price;
     if(Number.isInteger(id)) {
@@ -85,7 +86,7 @@ function Hero(props) {
     props.updatePlayer(newPlayer);
   }
 
-  function getEquipmentCard(equipment) {
+  const getEquipmentCard = (equipment) => {
     if(equipment) {
       return (
         <EquipmentCard equipment={equipment}
@@ -101,7 +102,7 @@ function Hero(props) {
     }
   }
 
-  function getBackpackCard(equipment, i) {
+  const getBackpackCard = (equipment, i) => {
     if(equipment) {
       return (
         <BackpackCard key={i} id={i} equipment={equipment}

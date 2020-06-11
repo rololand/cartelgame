@@ -3,7 +3,7 @@ import './EquipmentCard.css';
 import statsNamesPL from './../../utils/statsNamesPL.js';
 import statsNamesEN from './../../utils/statsNamesEN.js';
 
-function BackpackCard(props) {
+const BackpackCard = (props) => {
   const [isPopUpStats, setIsPopUpStats] = useState(false);
   const url = 'http://localhost:3000/db/items/' + props.equipment.imgUrl;
 

@@ -2,7 +2,7 @@ import React from 'react';
 import TaskCard from './TaskCard.js';
 import './SelectTaskContainer.css';
 
-function SelectTaskContainer(props) {
+const SelectTaskContainer = (props) => {
   return (
     <div className="SelectTaskContainer row">
       <TaskCard startTask={props.startTask.bind(this)}

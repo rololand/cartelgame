@@ -1,14 +1,12 @@
 import React from 'react';
 
-function Socios () {
-
+const Socios = () => {
 
   return (
     <div>
       Socios
     </div>
   )
-
 }
 
 export default Socios;

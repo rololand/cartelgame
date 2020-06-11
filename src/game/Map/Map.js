@@ -1,14 +1,12 @@
 import React from 'react';
 
-function Map () {
-
+const Map = () => {
 
   return (
     <div>
       Map
     </div>
   )
-
 }
 
 export default Map;

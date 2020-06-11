@@ -1,9 +1,7 @@
 import React from 'react';
 import displayTime from './../../utils/displayTime.js';
 
-function ExecuteTaskContainer(props) {
-
-
+const ExecuteTaskContainer = (props) => {
   const url = 'http://localhost:3000/db/tasks/' + props.imgUrl;
 
   return (
