@@ -18,6 +18,7 @@ import MailBox from './MailBox/MailBox.js';
 import Shop from './Shop/Shop.js';
 
 import getNewItem from './../utils/getNewItem.js';
+import getRandomInt from './../utils/getRandomInt.js'
 
 const Game = (props) => {
 
@@ -30,26 +31,59 @@ const Game = (props) => {
   const [isNextLvlPopUp, setNextLvlPopUp] = useState(false);
 
   useEffect(() => {
+    const getPlayer = () => {
+      const url  = 'http://localhost:5000/heros/' + props.playerId;
+      axios.get(url)
+        .then(player => {
+          setPlayer(player.data);
+          setPlayerDataLoaded(true);
+          console.log("Player data is loaded from db")
+        })
+        .catch(err => {
+          console.log('Error: ' + err);
+        });
+    }
+    const getTasksList = () => {
+      const url  = 'http://localhost:5000/tasks/';
+      axios.get(url)
+        .then(tasks => {
+          setTasksList(tasks.data[0].tasksList)
+          console.log("Task list is loaded from db")
+        })
+        .catch(err => {
+          console.log('Error: ' + err);
+        });
+    }
+    const getItemsList = () => {
+      const url  = 'http://localhost:5000/items/';
+      axios.get(url)
+        .then(items => {
+          setItemsList(items.data[0].itemsList)
+          console.log("Item list is loaded from db")
+        })
+        .catch(err => {
+          console.log('Error: ' + err);
+        });
+    }
+    const getLvlsList = () => {
+      const url  = 'http://localhost:5000/lvls/';
+      axios.get(url)
+        .then(lvls => {
+          setLvlsList(lvls.data[0].lvlsList)
+          console.log("Lvls list is loaded from db")
+        })
+        .catch(err => {
+          console.log('Error: ' + err);
+        });
+    }
+
     getPlayer();
     getTasksList();
     getItemsList();
     getLvlsList();
-  }, []);
+  }, [props.playerId]);
 
-  const getPlayer = () => {
-    const url  = 'http://localhost:5000/heros/' + props.playerId;
-    axios.get(url)
-      .then(player => {
-        setPlayer(player.data);
-        setPlayerDataLoaded(true);
-      })
-      .catch(err => {
-        console.log('Error: ' + err);
-      });
-  }
-
-  const updatePlayer = (player) => {
-    console.log("updating");
+  const updatePlayer = React.useCallback((player) => {
     let isLvlUp = false;
     while(player.exp > player.expNextLvl) {
       isLvlUp = true;
@@ -63,58 +97,23 @@ const Game = (props) => {
       .then((player) => {
         setPlayer(player.data)
         isLvlUp && setNextLvlPopUp(true);
+        console.log("Player data is uploaded to db")
       })
       .catch(err => {
         console.log('Error: ' + err);
       });
 
-  }
-
-  const getTasksList = () => {
-    const url  = 'http://localhost:5000/tasks/';
-    axios.get(url)
-      .then(tasks => {
-        setTasksList(tasks.data[0].tasksList)
-      })
-      .catch(err => {
-        console.log('Error: ' + err);
-      });
-  }
-
-  const getItemsList = () => {
-    const url  = 'http://localhost:5000/items/';
-    axios.get(url)
-      .then(items => {
-        setItemsList(items.data[0].itemsList)
-      })
-      .catch(err => {
-        console.log('Error: ' + err);
-      });
-  }
-
-  const getLvlsList = () => {
-    const url  = 'http://localhost:5000/lvls/';
-    axios.get(url)
-      .then(lvls => {
-        setLvlsList(lvls.data[0].lvlsList)
-      })
-      .catch(err => {
-        console.log('Error: ' + err);
-      });
-  }
+  }, [lvlsList])
 
   const selectGamePage = () => {
     if (actualGamePageName==="Hero") {
       return <Hero  player={player}
                     updatePlayer={(player) => updatePlayer(player)}/>
     } else if (actualGamePageName==="City") {
-      return <City  tasksList={tasksList}
-                    getNewItem = {()=> getNewItem(itemsList, player.lvl)}
-                    player={player}
-                    updatePlayer={player => updatePlayer(player)}
+      return <City  task={player.task}
                     calculateTask={() => calculateTask()}
-                    time={time}
-                    startTask = {(id, gold, exp) => startTask(id, gold, exp)}/>
+                    remainingTaskDuration={remainingTaskDuration}
+                    startTask = {(task, id) => startTask(task, id)}/>
     } else if (actualGamePageName==="Residence") {
       return <Residence />
     } else if (actualGamePageName==="Bribes") {
@@ -137,77 +136,122 @@ const Game = (props) => {
   }
 
   //City start
-  const [time, setTime] = useState("00:00");
+  const [remainingTaskDuration, setRemainingTaskDuration] = useState("00:00");
   const [CityAlert, setCityAlert] = useState('');
 
-  const isTaskFinished = React.useCallback(() => {
+  const isTaskTimeElapsed = React.useCallback(() => {
     if (player.task.isStarted) {
+      console.log("Function isTaskTimeElapsed")
       const endTime = player.task.endTime;
       const currentTime = new Date().getTime();
       const secondsToEnd = Math.round((endTime - currentTime)/1000);
-      setTime(secondsToEnd);
+      setRemainingTaskDuration(secondsToEnd);
       return endTime < currentTime
     }
-    return true
+    return false
   }, [player])
 
   const finishTask = React.useCallback(() => {
     if(player.task.isStarted && !player.task.isFinished) {
+      console.log("Function finishTask")
       let newPlayer = player;
       newPlayer.task.isFinished = true;
       setCityAlert('!!');
-      console.log("finishTask");
       updatePlayer(newPlayer)
     }
-  }, [player])
+  }, [player, updatePlayer])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if(isTaskFinished())
+      if(isTaskTimeElapsed())
         finishTask();
     }, 1000);
     return () => clearInterval(interval);
-  }, [player, finishTask, isTaskFinished]);
+  }, [player, finishTask, isTaskTimeElapsed]);
 
-  const startTask = (id, gold, exp) => {
+  const startTask = (task, id) => {
+    console.log("Function startTask");
     let date = new Date();
-    date = new Date(date.getTime() + tasksList[id].time*1000).getTime();
+    let taskEndTime = new Date(date.getTime() + task.taskDuration[id]*1000).getTime();
     let newPlayer = player;
 
     newPlayer.task.isStarted = true;
     newPlayer.task.isFinished = false;
     newPlayer.task.isCalculated = false;
-    newPlayer.task.endTime = date;
-    newPlayer.task.taskDuration = tasksList[id].time;
-    newPlayer.task.name = tasksList[id].name;
-    newPlayer.task.description = tasksList[id].description;
-    newPlayer.task.imgUrl = tasksList[id].imgUrl;
-    newPlayer.task.gold = [gold];
-    newPlayer.task.exp = [exp];
-    newPlayer.task.taskId = id;
-    console.log("startTask");
+    newPlayer.task.endTime = taskEndTime;
+    newPlayer.task.taskDuration = task.taskDuration[id];
+    newPlayer.task.name = task.name[id];
+    newPlayer.task.description = task.description[id];
+    newPlayer.task.imgUrl = task.imgUrl[id];
+    newPlayer.task.gold = task.gold[id];
+    newPlayer.task.exp = task.exp[id];
     updatePlayer(newPlayer);
   }
 
   const calculateTask = () => {
-    if(isTaskFinished()) {
+    console.log("Function calculateTask")
+    if(isTaskTimeElapsed()) {
       let newPlayer = player;
       newPlayer.task.isStarted = false;
+      newPlayer.task.isFinished = false;
       newPlayer.task.isCalculated = true;
-      newPlayer.task.isTasksIdSelected = false;
       setCityAlert('');
-      Number.isInteger(newPlayer.task.gold[0]) ?
-        newPlayer.gold = newPlayer.gold + newPlayer.task.gold[0] :
+      Number.isInteger(newPlayer.task.gold) ?
+        newPlayer.gold = newPlayer.gold + newPlayer.task.gold :
         newPlayer.gold = newPlayer.gold + 1;
-      Number.isInteger(newPlayer.task.exp[0]) ?
-        newPlayer.exp = newPlayer.exp + newPlayer.task.exp[0] :
+      Number.isInteger(newPlayer.task.exp) ?
+        newPlayer.exp = newPlayer.exp + newPlayer.task.exp :
         newPlayer.exp = newPlayer.exp + 1;
       if(newPlayer.task.item) {
         addEquipmentToBackpack(newPlayer.task.item);
       }
-      console.log("calculateTask")
-      updatePlayer(newPlayer)
+
+      //draw new tasks
+      const drawedTaskIds = drawOfThreeTaskIds()
+      let newGold = []
+      let newExp = []
+      let newName = []
+      let newDescription = []
+      let newImgUrl = []
+      let newTaskDuration = []
+      let random = 0;
+      let lvl = newPlayer.lvl + 1;
+      let idList = [0, 1, 2];
+      for(var i of idList) {
+        newName[i] = tasksList[drawedTaskIds[i]].name
+        newDescription[i] = tasksList[drawedTaskIds[i]].description
+        newImgUrl[i] = tasksList[drawedTaskIds[i]].imgUrl
+        newTaskDuration[i] = tasksList[drawedTaskIds[i]].time
+        random = getRandomInt(1, newTaskDuration[i]/2);
+        newGold[i] = Math.floor(tasksList[drawedTaskIds[i]].gold * lvl * random / 30)
+        newExp[i] = Math.floor(tasksList[drawedTaskIds[i]].exp * lvl * (newTaskDuration[i] - random) / 30)
+      }
+      if(getRandomInt(1, 100) < 90) {
+        newPlayer.task.item = getNewItem(itemsList, lvl);
+      } else {
+        newPlayer.task.item = {};
+      }
+      newPlayer.task.gold = newGold;
+      newPlayer.task.exp = newExp;
+      newPlayer.task.name = newName;
+      newPlayer.task.description = newDescription;
+      newPlayer.task.taskDuration = newTaskDuration;
+      newPlayer.task.imgUrl = newImgUrl;
+      updatePlayer(newPlayer);
     }
+  }
+
+  const drawOfThreeTaskIds = () => {
+    let id1 = getRandomInt(0, tasksList.length);
+    let id2 = getRandomInt(0, tasksList.length);
+    let id3 = getRandomInt(0, tasksList.length);
+    while(id2 === id1) {
+      id2 = getRandomInt(0, tasksList.length);
+    }
+    while(id3 === id1 || id3 === id2) {
+      id3 = getRandomInt(0, tasksList.length);
+    }
+    return [id1, id2, id3]
   }
 
   const addEquipmentToBackpack = (equipment) => {
