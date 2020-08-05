@@ -135,7 +135,9 @@ const Game = (props) => {
     } else if (actualGamePageName==="Shop") {
       return <Shop />
     } else {
-      return <Prison releaseFromPrison={() => releaseFromPrison()}/>
+      return <Prison  releaseFromPrison={() => releaseFromPrison()}
+                      isEnoughGoldToLeftPrison={isEnoughGoldToLeftPrison()}
+                      costOfGettingOutOfPrison={calculateCostOfGettingOutOfPrison()}/>
     }
   }
 
@@ -276,8 +278,18 @@ const Game = (props) => {
   //Prison start
   const releaseFromPrison = () => {
     const newPlayer = player
+    const costOfGettingOutOfPrison = calculateCostOfGettingOutOfPrison()
+    newPlayer.gold = newPlayer.gold - costOfGettingOutOfPrison
     newPlayer.prison.isPrisoned = false
     updatePlayer(newPlayer)
+  }
+
+  const calculateCostOfGettingOutOfPrison = () => {
+    return player.lvl * 100
+  }
+
+  const isEnoughGoldToLeftPrison = () => {
+    return player.gold >= calculateCostOfGettingOutOfPrison()
   }
   //Prison end
 
