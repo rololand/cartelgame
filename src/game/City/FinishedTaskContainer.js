@@ -14,6 +14,7 @@ const FinishedTaskContainer = (props) => {
         Exp: {props.task.exp} <br />
         Item name: {props.task.item ? props.task.item.name : ''}<br />
         Item description: {props.task.item ? props.task.item.description : ''}<br />
+        Szansa na złapanie: {props.prisonChance}%<br />
         <button onClick={() => props.calculateTask()}>Calculate Task</button>
       </div>
     </div>

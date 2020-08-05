@@ -8,8 +8,9 @@ const City = (props) => {
   const pageSelector = () => {
     if(props.task.isStarted) {
       if(props.task.isFinished)
-        return <FinishedTaskContainer  task={props.task}
-                                  calculateTask={props.calculateTask}/>
+        return <FinishedTaskContainer   task={props.task}
+                                        prisonChance={props.prisonChance}
+                                        calculateTask={props.calculateTask}/>
       else
         return Number.isInteger(props.remainingTaskDuration) && (
             <ExecuteTaskContainer remainingTaskDuration={props.remainingTaskDuration}

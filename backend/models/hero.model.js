@@ -50,6 +50,10 @@ const heroSchema = new Schema({
     type: Object,
     required: true
   },
+  prison: {
+    type: Object,
+    required: true
+  },
   avatar: {
     type: String,
     required: true

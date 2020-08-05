@@ -16,6 +16,7 @@ import Socios from './Socios/Socios.js';
 import Cartel from './Cartel/Cartel.js';
 import MailBox from './MailBox/MailBox.js';
 import Shop from './Shop/Shop.js';
+import Prison from './Prison/Prison.js';
 
 import getNewItem from './../utils/getNewItem.js';
 import getRandomInt from './../utils/getRandomInt.js'
@@ -109,8 +110,9 @@ const Game = (props) => {
     if (actualGamePageName==="Hero") {
       return <Hero  player={player}
                     updatePlayer={(player) => updatePlayer(player)}/>
-    } else if (actualGamePageName==="City") {
+    } else if (actualGamePageName==="City" && !player.prison.isPrisoned) {
       return <City  task={player.task}
+                    prisonChance = {player.prison.chance}
                     calculateTask={() => calculateTask()}
                     remainingTaskDuration={remainingTaskDuration}
                     startTask = {(task, id) => startTask(task, id)}/>
@@ -132,6 +134,8 @@ const Game = (props) => {
       return <MailBox />
     } else if (actualGamePageName==="Shop") {
       return <Shop />
+    } else {
+      return <Prison releaseFromPrison={() => releaseFromPrison()}/>
     }
   }
 
@@ -189,21 +193,29 @@ const Game = (props) => {
   }
 
   const calculateTask = () => {
-    console.log("Function calculateTask")
     if(isTaskTimeElapsed()) {
+      console.log("Function calculateTask")
+      setCityAlert('');
       let newPlayer = player;
+
+      if (getRandomInt(1, 100) < player.prison.chance) {
+        newPlayer.prison.isPrisoned = true
+      }
+
       newPlayer.task.isStarted = false;
       newPlayer.task.isFinished = false;
       newPlayer.task.isCalculated = true;
-      setCityAlert('');
-      Number.isInteger(newPlayer.task.gold) ?
-        newPlayer.gold = newPlayer.gold + newPlayer.task.gold :
-        newPlayer.gold = newPlayer.gold + 1;
-      Number.isInteger(newPlayer.task.exp) ?
-        newPlayer.exp = newPlayer.exp + newPlayer.task.exp :
-        newPlayer.exp = newPlayer.exp + 1;
-      if(newPlayer.task.item) {
-        addEquipmentToBackpack(newPlayer.task.item);
+
+      if(!newPlayer.prison.isPrisoned) {
+        Number.isInteger(newPlayer.task.gold) ?
+          newPlayer.gold = newPlayer.gold + newPlayer.task.gold :
+          newPlayer.gold = newPlayer.gold + 1;
+        Number.isInteger(newPlayer.task.exp) ?
+          newPlayer.exp = newPlayer.exp + newPlayer.task.exp :
+          newPlayer.exp = newPlayer.exp + 1;
+        if(newPlayer.task.item) {
+          addEquipmentToBackpack(newPlayer.task.item);
+        }
       }
 
       //draw new tasks
@@ -259,9 +271,15 @@ const Game = (props) => {
       player.backpack.push(equipment);
     }
   }
-
   //City end
 
+  //Prison start
+  const releaseFromPrison = () => {
+    const newPlayer = player
+    newPlayer.prison.isPrisoned = false
+    updatePlayer(newPlayer)
+  }
+  //Prison end
 
   return (
     isPlayerDataLoaded ?
