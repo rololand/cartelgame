@@ -137,6 +137,8 @@ const Game = (props) => {
     } else {
       return <Prison  releaseFromPrison={() => releaseFromPrison()}
                       isEnoughGoldToLeftPrison={isEnoughGoldToLeftPrison()}
+                      remainingPrisonDuration={remainingPrisonDuration}
+                      prisonDuration={player.prison.duration}
                       costOfGettingOutOfPrison={calculateCostOfGettingOutOfPrison()}/>
     }
   }
@@ -147,7 +149,6 @@ const Game = (props) => {
 
   const isTaskTimeElapsed = React.useCallback(() => {
     if (player.task.isStarted) {
-      console.log("Function isTaskTimeElapsed")
       const endTime = player.task.endTime;
       const currentTime = new Date().getTime();
       const secondsToEnd = Math.round((endTime - currentTime)/1000);
@@ -171,6 +172,8 @@ const Game = (props) => {
     const interval = setInterval(() => {
       if(isTaskTimeElapsed())
         finishTask();
+      if(isPrisonTimeElapsed())
+        leavePrison();
     }, 1000);
     return () => clearInterval(interval);
   }, [player, finishTask, isTaskTimeElapsed]);
@@ -201,7 +204,9 @@ const Game = (props) => {
       let newPlayer = player;
 
       if (getRandomInt(1, 100) < player.prison.chance) {
+        let date = new Date();
         newPlayer.prison.isPrisoned = true
+        newPlayer.prison.exitPrisonTime = new Date(date.getTime() + player.prison.duration*1000).getTime()
       }
 
       newPlayer.task.isStarted = false;
@@ -276,6 +281,8 @@ const Game = (props) => {
   //City end
 
   //Prison start
+  const [remainingPrisonDuration, setRemainingPrisonDuration] = useState("00:00");
+
   const releaseFromPrison = () => {
     const newPlayer = player
     const costOfGettingOutOfPrison = calculateCostOfGettingOutOfPrison()
@@ -291,6 +298,29 @@ const Game = (props) => {
   const isEnoughGoldToLeftPrison = () => {
     return player.gold >= calculateCostOfGettingOutOfPrison()
   }
+
+  const isPrisonTimeElapsed = React.useCallback(() => {
+    if (player.prison.isPrisoned) {
+      const endTime = player.prison.exitPrisonTime;
+      const currentTime = new Date().getTime();
+      const secondsToEnd = Math.round((endTime - currentTime)/1000);
+      console.log("endTime: " + endTime)
+      console.log("currentTime: " + currentTime)
+      console.log("secondsToEnd: " + secondsToEnd)
+      setRemainingPrisonDuration(secondsToEnd);
+      return endTime < currentTime
+    }
+    return false
+  }, [player])
+
+  const leavePrison = React.useCallback(() => {
+    if(player.prison.isPrisoned) {
+      console.log("Function leavePrison")
+      let newPlayer = player
+      newPlayer.prison.isPrisoned = false
+      updatePlayer(newPlayer)
+    }
+  }, [player, updatePlayer])
   //Prison end
 
   return (
