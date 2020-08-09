@@ -91,6 +91,7 @@ const Game = (props) => {
       player.lvl += 1;
       player.exp -= player.expNextLvl;
       player.expNextLvl = lvlsList[player.lvl];
+      player.prison.chance = player.lvl * 5;
     }
 
     const url  = 'http://localhost:5000/heros/update/' + player._id;
@@ -144,7 +145,7 @@ const Game = (props) => {
   }
 
   //City start
-  const [remainingTaskDuration, setRemainingTaskDuration] = useState("00:00");
+  const [remainingTaskDuration, setRemainingTaskDuration] = useState("undefined");
   const [CityAlert, setCityAlert] = useState('');
 
   const isTaskTimeElapsed = React.useCallback(() => {
@@ -256,6 +257,7 @@ const Game = (props) => {
       newPlayer.task.description = newDescription;
       newPlayer.task.taskDuration = newTaskDuration;
       newPlayer.task.imgUrl = newImgUrl;
+      setRemainingTaskDuration("undefined")
       updatePlayer(newPlayer);
     }
   }
@@ -281,18 +283,20 @@ const Game = (props) => {
   //City end
 
   //Prison start
-  const [remainingPrisonDuration, setRemainingPrisonDuration] = useState("00:00");
+  const [remainingPrisonDuration, setRemainingPrisonDuration] = useState("undefined");
 
   const releaseFromPrison = () => {
     const newPlayer = player
     const costOfGettingOutOfPrison = calculateCostOfGettingOutOfPrison()
     newPlayer.gold = newPlayer.gold - costOfGettingOutOfPrison
     newPlayer.prison.isPrisoned = false
+    newPlayer.prison.exitPrisonTime = 1596743927075
+    setRemainingPrisonDuration("undefined")
     updatePlayer(newPlayer)
   }
 
   const calculateCostOfGettingOutOfPrison = () => {
-    return player.lvl * 100
+    return player.lvl * 1
   }
 
   const isEnoughGoldToLeftPrison = () => {
@@ -308,6 +312,7 @@ const Game = (props) => {
       console.log("currentTime: " + currentTime)
       console.log("secondsToEnd: " + secondsToEnd)
       setRemainingPrisonDuration(secondsToEnd);
+      console.log("remainingPrisonDuration: " + remainingPrisonDuration)
       return endTime < currentTime
     }
     return false
@@ -318,6 +323,7 @@ const Game = (props) => {
       console.log("Function leavePrison")
       let newPlayer = player
       newPlayer.prison.isPrisoned = false
+      setRemainingPrisonDuration("undefined")
       updatePlayer(newPlayer)
     }
   }, [player, updatePlayer])

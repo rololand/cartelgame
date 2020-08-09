@@ -12,10 +12,8 @@ const City = (props) => {
                                         prisonChance={props.prisonChance}
                                         calculateTask={props.calculateTask}/>
       else
-        return Number.isInteger(props.remainingTaskDuration) && (
-            <ExecuteTaskContainer remainingTaskDuration={props.remainingTaskDuration}
-                                  task={props.task}/>
-          )
+        return <ExecuteTaskContainer  remainingTaskDuration={props.remainingTaskDuration}
+                                      task={props.task}/>
     } else {
       return <SelectTaskContainer   startTask={props.startTask.bind(this)}
                                     task={props.task}/>

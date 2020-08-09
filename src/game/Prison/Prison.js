@@ -4,19 +4,20 @@ import displayTime from './../../utils/displayTime.js';
 
 const Prison = (props) => {
   const url = 'http://localhost:3000/db/others/prison.jpg';
-  const prisonElapsedTime = props.prisonDuration - props.remainingPrisonDuration
-  console.log("prisonElapsedTime: " + prisonElapsedTime)
-  console.log("prisonDuration: " + props.prisonDuration)
-  console.log("remainingPrisonDuration: " + props.remainingPrisonDuration)
+  let remainingPrisonDuration = props.remainingPrisonDuration
+  remainingPrisonDuration = Number.isInteger(remainingPrisonDuration) ?
+                                  remainingPrisonDuration :
+                                  props.prisonDuration
+  const prisonElapsedTime = props.prisonDuration - remainingPrisonDuration
   return (
     <div>
       <h1>Zostałeś złapany!</h1>
       <img className="PrisonImg" src={url} alt={''}/><br />
-      {displayTime(props.remainingPrisonDuration)} <br />
+      {displayTime(remainingPrisonDuration)} <br />
       <progress value={prisonElapsedTime}
                 max={props.prisonDuration}>
       </progress>
-      <h2>Przeczekaj odsiadke lub opłać kaucję</h2>
+      <h2>Przeczekaj odsiadkę lub opłać kaucję</h2>
       <button disabled={props.isEnoughGoldToLeftPrison ? false : true}
               onClick={() => props.releaseFromPrison()}>
         Wyjdź z więzienia za {props.costOfGettingOutOfPrison} złota
