@@ -1,15 +1,15 @@
-.TaskCard {
+.card {
   width: 33%;
   margin-top: 20px;
   margin-left: 5px;
   margin-right: 5px;
 }
 
-.taskCardImg {
+.cardImg {
   width: 100%;
 }
 
-.TaskCard p {
+.cardDescription {
   text-align: left;
   height: 150px;
 }

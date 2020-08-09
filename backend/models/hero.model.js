@@ -46,6 +46,10 @@ const heroSchema = new Schema({
     type: Array,
     required: true
   },
+  bribe: {
+    type: Object,
+    required: true
+  },
   task: {
     type: Object,
     required: true

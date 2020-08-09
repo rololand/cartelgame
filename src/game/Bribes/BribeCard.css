@@ -1,0 +1,10 @@
+.bribeHeader {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.bribeDescription {
+  height: 100px;
+  text-align: justify;
+  text-justify: inter-word;
+}

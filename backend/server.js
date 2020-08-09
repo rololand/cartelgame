@@ -30,6 +30,9 @@ app.use('/heros', herosRouter);
 const tasksRouter = require('./routes/tasks.js');
 app.use('/tasks', tasksRouter);
 
+const bribesRouter = require('./routes/bribes.js');
+app.use('/bribes', bribesRouter);
+
 const itemsRouter = require('./routes/items.js');
 app.use('/items', itemsRouter);
 

@@ -8,6 +8,7 @@ const SelectTaskContainer = (props) => {
       {[0, 1, 2].map((id) =>
         <TaskCard startTask={props.startTask.bind(this)}
                   task={props.task}
+                  prisonChance={props.prisonChance}
                   id={id}
                   key={id}/>
       )}

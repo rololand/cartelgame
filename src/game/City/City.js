@@ -16,7 +16,8 @@ const City = (props) => {
                                       task={props.task}/>
     } else {
       return <SelectTaskContainer   startTask={props.startTask.bind(this)}
-                                    task={props.task}/>
+                                    task={props.task}
+                                    prisonChance={props.prisonChance}/>
     }
   }
 

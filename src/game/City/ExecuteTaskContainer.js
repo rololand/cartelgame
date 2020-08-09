@@ -11,7 +11,7 @@ const ExecuteTaskContainer = (props) => {
   return (
     <div>
       <h1>{props.task.name}</h1>
-      <img className="taskCardImg" src={url} alt={''}/><br />
+      <img className="cardImg" src={url} alt={''}/><br />
       {displayTime(remainingTaskDuration)} <br />
       <progress value={taskElapsedTime}
                 max={props.task.taskDuration}>

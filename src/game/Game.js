@@ -26,6 +26,7 @@ const Game = (props) => {
   const [actualGamePageName, setActualGamePageName] = useState("Hero");
   const [player, setPlayer] = useState({});
   const [tasksList, setTasksList] = useState([]);
+  const [bribesList, setBribesList] = useState([]);
   const [itemsList, setItemsList] = useState([]);
   const [lvlsList, setLvlsList] = useState([]);
   const [isPlayerDataLoaded, setPlayerDataLoaded] = useState(false);
@@ -49,7 +50,18 @@ const Game = (props) => {
       axios.get(url)
         .then(tasks => {
           setTasksList(tasks.data[0].tasksList)
-          console.log("Task list is loaded from db")
+          console.log("Tasks list is loaded from db")
+        })
+        .catch(err => {
+          console.log('Error: ' + err);
+        });
+    }
+    const getBribesList = () => {
+      const url  = 'http://localhost:5000/bribes/';
+      axios.get(url)
+        .then(bribes => {
+          setBribesList(bribes.data[0].bribesList)
+          console.log("Bribes list is loaded from db")
         })
         .catch(err => {
           console.log('Error: ' + err);
@@ -60,7 +72,7 @@ const Game = (props) => {
       axios.get(url)
         .then(items => {
           setItemsList(items.data[0].itemsList)
-          console.log("Item list is loaded from db")
+          console.log("Items list is loaded from db")
         })
         .catch(err => {
           console.log('Error: ' + err);
@@ -80,6 +92,7 @@ const Game = (props) => {
 
     getPlayer();
     getTasksList();
+    getBribesList();
     getItemsList();
     getLvlsList();
   }, [props.playerId]);
@@ -109,23 +122,26 @@ const Game = (props) => {
 
   const selectGamePage = () => {
     if (actualGamePageName==="Hero") {
-      return <Hero  player={player}
-                    updatePlayer={(player) => updatePlayer(player)}/>
+      return <Hero  player = {player}
+                    updatePlayer = {(player) => updatePlayer(player)}/>
     } else if (actualGamePageName==="City" && !player.prison.isPrisoned) {
       return <City  task={player.task}
                     prisonChance = {player.prison.chance}
-                    calculateTask={() => calculateTask()}
-                    remainingTaskDuration={remainingTaskDuration}
+                    calculateTask = {() => calculateTask()}
+                    remainingTaskDuration = {remainingTaskDuration}
                     startTask = {(task, id) => startTask(task, id)}/>
-    } else if (actualGamePageName==="Residence") {
+    } else if (actualGamePageName==="Residence" && !player.prison.isPrisoned) {
       return <Residence />
-    } else if (actualGamePageName==="Bribes") {
-      return <Bribes />
-    } else if (actualGamePageName==="Lab") {
+    } else if (actualGamePageName==="Bribes" && !player.prison.isPrisoned) {
+      return <Bribes  player = {player}
+                      bribesList = {bribesList}
+                      updatePlayer = {(player) => updatePlayer(player)}
+                      remainingBribeDuration = {remainingBribeDuration}/>
+    } else if (actualGamePageName==="Lab" && !player.prison.isPrisoned) {
       return <Lab />
-    } else if (actualGamePageName==="Warehouse") {
+    } else if (actualGamePageName==="Warehouse" && !player.prison.isPrisoned) {
       return <Warehouse />
-    } else if (actualGamePageName==="Map") {
+    } else if (actualGamePageName==="Map" && !player.prison.isPrisoned) {
       return <Map />
     } else if (actualGamePageName==="Socios") {
       return <Socios />
@@ -133,14 +149,14 @@ const Game = (props) => {
       return <Cartel />
     } else if (actualGamePageName==="MailBox") {
       return <MailBox />
-    } else if (actualGamePageName==="Shop") {
+    } else if (actualGamePageName==="Shop" && !player.prison.isPrisoned) {
       return <Shop />
     } else {
-      return <Prison  releaseFromPrison={() => releaseFromPrison()}
-                      isEnoughGoldToLeftPrison={isEnoughGoldToLeftPrison()}
-                      remainingPrisonDuration={remainingPrisonDuration}
-                      prisonDuration={player.prison.duration}
-                      costOfGettingOutOfPrison={calculateCostOfGettingOutOfPrison()}/>
+      return <Prison  releaseFromPrison = {() => releaseFromPrison()}
+                      isEnoughGoldToLeftPrison = {isEnoughGoldToLeftPrison()}
+                      remainingPrisonDuration = {remainingPrisonDuration}
+                      prisonDuration = {player.prison.duration}
+                      costOfGettingOutOfPrison = {calculateCostOfGettingOutOfPrison()}/>
     }
   }
 
@@ -175,6 +191,8 @@ const Game = (props) => {
         finishTask();
       if(isPrisonTimeElapsed())
         leavePrison();
+      if(isBribeTimeElapsed())
+        finishBribe();
     }, 1000);
     return () => clearInterval(interval);
   }, [player, finishTask, isTaskTimeElapsed]);
@@ -308,11 +326,7 @@ const Game = (props) => {
       const endTime = player.prison.exitPrisonTime;
       const currentTime = new Date().getTime();
       const secondsToEnd = Math.round((endTime - currentTime)/1000);
-      console.log("endTime: " + endTime)
-      console.log("currentTime: " + currentTime)
-      console.log("secondsToEnd: " + secondsToEnd)
       setRemainingPrisonDuration(secondsToEnd);
-      console.log("remainingPrisonDuration: " + remainingPrisonDuration)
       return endTime < currentTime
     }
     return false
@@ -328,6 +342,32 @@ const Game = (props) => {
     }
   }, [player, updatePlayer])
   //Prison end
+
+  //Birbe start
+  const [remainingBribeDuration, setRemainingBribeDuration] = useState("undefined");
+
+  const isBribeTimeElapsed = React.useCallback(() => {
+    if (player.bribe.isPayed) {
+      const endTime = player.bribe.endTime;
+      const currentTime = new Date().getTime();
+      const secondsToEnd = Math.round((endTime - currentTime)/1000);
+      setRemainingBribeDuration(secondsToEnd);
+      return endTime < currentTime
+    }
+    return false
+  }, [player])
+
+  const finishBribe = React.useCallback(() => {
+    if(player.bribe.isPayed) {
+      console.log("Function finishBribe")
+      let newPlayer = player
+      newPlayer.bribe.isPayed = false
+      newPlayer.prison.chance += newPlayer.bribe.chanceReduction
+      setRemainingBribeDuration("undefined")
+      updatePlayer(newPlayer)
+    }
+  }, [player, updatePlayer])
+  //Bribe end
 
   return (
     isPlayerDataLoaded ?
