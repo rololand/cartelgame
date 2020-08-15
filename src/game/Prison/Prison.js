@@ -19,7 +19,7 @@ const Prison = (props) => {
       </progress>
       <h2>Przeczekaj odsiadkę lub opłać kaucję</h2>
       <button disabled={props.isEnoughGoldToLeftPrison ? false : true}
-              onClick={() => props.releaseFromPrison()}>
+              onClick={() => props.payAndGetOutPrison()}>
         Wyjdź z więzienia za {props.costOfGettingOutOfPrison} złota
       </button>
     </div>

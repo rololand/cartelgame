@@ -152,7 +152,7 @@ const Game = (props) => {
     } else if (actualGamePageName==="Shop" && !player.prison.isPrisoned) {
       return <Shop />
     } else {
-      return <Prison  releaseFromPrison = {() => releaseFromPrison()}
+      return <Prison  payAndGetOutPrison = {() => payAndGetOutPrison()}
                       isEnoughGoldToLeftPrison = {isEnoughGoldToLeftPrison()}
                       remainingPrisonDuration = {remainingPrisonDuration}
                       prisonDuration = {player.prison.duration}
@@ -190,7 +190,7 @@ const Game = (props) => {
       if(isTaskTimeElapsed())
         finishTask();
       if(isPrisonTimeElapsed())
-        leavePrison();
+        terminationOfPrisonSentence();
       if(isBribeTimeElapsed())
         finishBribe();
     }, 1000);
@@ -303,16 +303,6 @@ const Game = (props) => {
   //Prison start
   const [remainingPrisonDuration, setRemainingPrisonDuration] = useState("undefined");
 
-  const releaseFromPrison = () => {
-    const newPlayer = player
-    const costOfGettingOutOfPrison = calculateCostOfGettingOutOfPrison()
-    newPlayer.gold = newPlayer.gold - costOfGettingOutOfPrison
-    newPlayer.prison.isPrisoned = false
-    newPlayer.prison.exitPrisonTime = 1596743927075
-    setRemainingPrisonDuration("undefined")
-    updatePlayer(newPlayer)
-  }
-
   const calculateCostOfGettingOutOfPrison = () => {
     return player.lvl * 1
   }
@@ -332,15 +322,25 @@ const Game = (props) => {
     return false
   }, [player])
 
-  const leavePrison = React.useCallback(() => {
+  const terminationOfPrisonSentence = React.useCallback(() => {
     if(player.prison.isPrisoned) {
-      console.log("Function leavePrison")
+      console.log("Function terminationOfPrisonSentence")
       let newPlayer = player
       newPlayer.prison.isPrisoned = false
       setRemainingPrisonDuration("undefined")
       updatePlayer(newPlayer)
     }
   }, [player, updatePlayer])
+
+  const payAndGetOutPrison = () => {
+    const newPlayer = player
+    const costOfGettingOutOfPrison = calculateCostOfGettingOutOfPrison()
+    newPlayer.gold = newPlayer.gold - costOfGettingOutOfPrison
+    newPlayer.prison.isPrisoned = false
+    newPlayer.prison.exitPrisonTime = 1596743927075
+    setRemainingPrisonDuration("undefined")
+    updatePlayer(newPlayer)
+  }
   //Prison end
 
   //Birbe start
