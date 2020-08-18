@@ -1,6 +1,7 @@
 import React from 'react';
 import './Prison.css';
-import displayTime from './../../utils/displayTime.js';
+import displayTime from './../../utils/displayTime';
+import ProgressBar from './../../utils/ProgressBar';
 
 const Prison = (props) => {
   const url = 'http://localhost:3000/db/others/prison.jpg';
@@ -14,9 +15,8 @@ const Prison = (props) => {
       <h1>Zostałeś złapany!</h1>
       <img className="PrisonImg" src={url} alt={''}/><br />
       {displayTime(remainingPrisonDuration)} <br />
-      <progress value={prisonElapsedTime}
-                max={props.prisonDuration}>
-      </progress>
+      <ProgressBar  value={prisonElapsedTime}
+                    max={props.prisonDuration} />
       <h2>Przeczekaj odsiadkę lub opłać kaucję</h2>
       <button disabled={props.isEnoughGoldToLeftPrison ? false : true}
               onClick={() => props.payAndGetOutPrison()}>

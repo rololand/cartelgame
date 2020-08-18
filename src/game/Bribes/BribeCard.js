@@ -1,6 +1,7 @@
 import React from 'react';
 import './BribeCard.css';
-import displayTime from './../../utils/displayTime.js';
+import displayTime from './../../utils/displayTime';
+import ProgressBar from './../../utils/ProgressBar';
 
 const BribeCard = (props) => {
   const imgUrl = 'http://localhost:3000/db/avatars/' + props.imgUrl
@@ -20,9 +21,8 @@ const BribeCard = (props) => {
       {props.playerBribe.isPayed && props.playerBribe.id === props.id ?
         <div>
           {displayTime(remainingBribeDuration)} <br />
-          <progress value={bribeElapsedTime}
-                    max={props.bribeDuration}>
-          </progress>
+          <ProgressBar value={bribeElapsedTime}
+                    max={props.bribeDuration} />
         </div> :
         <button disabled={props.isEnoughGoldToPayBribe && !props.playerBribe.isPayed? false : true}
                 onClick={() => props.payBribe(props.id)}>

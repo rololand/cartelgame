@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import './GameHeader.css';
+import ProgressBar from './../utils/ProgressBar';
 
 const GameHeader = (props) => {
   const [isPopUp, setIsPopUp] = useState(false);
@@ -19,12 +20,12 @@ const GameHeader = (props) => {
           Lvl: {props.player.lvl}
         </div>
       </div>
-      <div id="progressBar"
-          onMouseEnter={()=>setIsPopUp(true)}
-          onMouseLeave={()=>setIsPopUp(false)}>
-        <progress value={props.player.exp} max={props.player.expNextLvl}></progress>
+      <div  id="progressBarHeader"
+            onMouseEnter={()=>setIsPopUp(true)}
+            onMouseLeave={()=>setIsPopUp(false)}>
+        <ProgressBar value={props.player.exp} max={props.player.expNextLvl}/>
         {isPopUp && (
-          <div id="progressBarInfo">
+          <div id="progressBarHeaderInfo">
             {props.player.exp} / {props.player.expNextLvl}
           </div>
         )}

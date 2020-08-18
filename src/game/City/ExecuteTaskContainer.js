@@ -1,5 +1,6 @@
 import React from 'react';
-import displayTime from './../../utils/displayTime.js';
+import displayTime from './../../utils/displayTime';
+import ProgressBar from './../../utils/ProgressBar';
 
 const ExecuteTaskContainer = (props) => {
   const url = 'http://localhost:3000/db/tasks/' + props.task.imgUrl;
@@ -13,9 +14,8 @@ const ExecuteTaskContainer = (props) => {
       <h1>{props.task.name}</h1>
       <img className="cardImg" src={url} alt={''}/><br />
       {displayTime(remainingTaskDuration)} <br />
-      <progress value={taskElapsedTime}
-                max={props.task.taskDuration}>
-      </progress>
+      <ProgressBar value={taskElapsedTime}
+                max={props.task.taskDuration} />
     </div>
   )
 }

@@ -79,9 +79,6 @@ const App = (props) => {
         <Game onClickLogout={() => setUserLogged(false)}
               playerId={playerId}/> :
         <div>
-          <br />
-          Dodaj herosa: admin, admin, mail, M<br />
-          <button onClick={() => createHero()}>DODAJ</button><br /><br /><br />
           <Logging  handleLoggingOnClickButton={() => handleLoggingOnClickButton()}
                     handleChangeLogin={value => setLogin(value)}
                     handleChangePassword={value => setPassword(value)}
