@@ -72,7 +72,7 @@ const App = (props) => {
         console.log('Error: ' + err);
       });
   }
-
+  handleLoggingOnClickButton();
   return (
     <div className="App">
       {isUserLogged ?

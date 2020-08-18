@@ -7,7 +7,7 @@
 .equipmentInfo {
   text-align: left;
   position: absolute;
-  top: 20px;
+  top: 0px;
   left: 100%;
   z-index: 2;
   background-color: #6a6b6b;

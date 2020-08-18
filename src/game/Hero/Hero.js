@@ -165,20 +165,40 @@ const Hero = (props) => {
           </div>
         </div>
       </div>
-
-      {statsNamesEN.map((statName, index)=>
-        statName !== "armor" && (
-          <div key={statsNamesPL[index]} className="row">
-            <div className="statsName">
-              {statsNamesPL[index]}: {props.player.stats[statName]} + {props.player.statsAllEquipments[statName]}
-            </div>
-            <AddStatsButton onClick={(statName) => addStatsPoint(statName)}
-                            statName={statName}
-                            cost={claculatePointCost(statName)}
-                            isDisabled={!isEnoughGoldToBuyStatsPoint(statName)}/><br />
+      <div className="statsContainer">
+        <div className="row">
+          <div>
+            {statsNamesEN.slice(0,3).map((statName, index)=>
+              statName !== "armor" && (
+                <div key={statsNamesPL[index]} className="row">
+                  <div className="statsName">
+                    {statsNamesPL[index]}: {props.player.stats[statName]} + {props.player.statsAllEquipments[statName]}
+                  </div>
+                  <AddStatsButton onClick={(statName) => addStatsPoint(statName)}
+                                  statName={statName}
+                                  cost={claculatePointCost(statName)}
+                                  isDisabled={!isEnoughGoldToBuyStatsPoint(statName)}/><br />
+                </div>
+              )
+            )}
           </div>
-        )
-      )}
+          <div>
+            {statsNamesEN.slice(3,statsNamesEN.length).map((statName, index)=>
+              statName !== "armor" && (
+                <div key={statsNamesPL[index+3]} className="row">
+                  <div className="statsName">
+                    {statsNamesPL[index+3]}: {props.player.stats[statName]} + {props.player.statsAllEquipments[statName]}
+                  </div>
+                  <AddStatsButton onClick={(statName) => addStatsPoint(statName)}
+                                  statName={statName}
+                                  cost={claculatePointCost(statName)}
+                                  isDisabled={!isEnoughGoldToBuyStatsPoint(statName)}/><br />
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
