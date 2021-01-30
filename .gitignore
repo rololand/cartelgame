@@ -7,9 +7,6 @@
 /backend/node_modules
 /backend/.env
 
-#db
-/public/db
-
 # testing
 /coverage
 
