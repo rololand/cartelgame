@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/cartelgame/static/css/main.f09ac323.chunk.css",
-    "main.js": "/cartelgame/static/js/main.68cadbab.chunk.js",
-    "main.js.map": "/cartelgame/static/js/main.68cadbab.chunk.js.map",
+    "main.js": "/cartelgame/static/js/main.7e153655.chunk.js",
+    "main.js.map": "/cartelgame/static/js/main.7e153655.chunk.js.map",
     "runtime-main.js": "/cartelgame/static/js/runtime-main.d200caea.js",
     "runtime-main.js.map": "/cartelgame/static/js/runtime-main.d200caea.js.map",
     "static/js/2.1401583f.chunk.js": "/cartelgame/static/js/2.1401583f.chunk.js",
     "static/js/2.1401583f.chunk.js.map": "/cartelgame/static/js/2.1401583f.chunk.js.map",
     "index.html": "/cartelgame/index.html",
-    "precache-manifest.8a5a69eae9e44709e1e4e06df6337c0e.js": "/cartelgame/precache-manifest.8a5a69eae9e44709e1e4e06df6337c0e.js",
+    "precache-manifest.3cf54c82d673e8c37530784bc92819bf.js": "/cartelgame/precache-manifest.3cf54c82d673e8c37530784bc92819bf.js",
     "service-worker.js": "/cartelgame/service-worker.js",
     "static/css/main.f09ac323.chunk.css.map": "/cartelgame/static/css/main.f09ac323.chunk.css.map",
     "static/js/2.1401583f.chunk.js.LICENSE.txt": "/cartelgame/static/js/2.1401583f.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.d200caea.js",
     "static/js/2.1401583f.chunk.js",
     "static/css/main.f09ac323.chunk.css",
-    "static/js/main.68cadbab.chunk.js"
+    "static/js/main.7e153655.chunk.js"
   ]
 }
