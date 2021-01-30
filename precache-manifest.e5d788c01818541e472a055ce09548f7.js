@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "85ded439f927f3383635f86d325ccfdf",
+    "revision": "ef8bb3582bbf6590c766e572d31429dd",
     "url": "/cartelgame/index.html"
   },
   {
-    "revision": "14c3e40877b31480849b",
+    "revision": "6dd302ddb1bdcf4f5a33",
     "url": "/cartelgame/static/css/main.f09ac323.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/cartelgame/static/js/2.1401583f.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "14c3e40877b31480849b",
-    "url": "/cartelgame/static/js/main.7e153655.chunk.js"
+    "revision": "6dd302ddb1bdcf4f5a33",
+    "url": "/cartelgame/static/js/main.a835275b.chunk.js"
   },
   {
     "revision": "ef4920933bd5bdfce06b",
