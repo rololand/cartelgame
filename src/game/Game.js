@@ -24,32 +24,33 @@ import getRandomInt from './../utils/getRandomInt.js'
 const Game = (props) => {
 
   const [actualGamePageName, setActualGamePageName] = useState("Hero");
-  const [player, setPlayer] = useState({});
+  const [hero, setHero] = useState({});
   const [tasksList, setTasksList] = useState([]);
   const [bribesList, setBribesList] = useState([]);
   const [itemsList, setItemsList] = useState([]);
   const [lvlsList, setLvlsList] = useState([]);
-  const [isPlayerDataLoaded, setPlayerDataLoaded] = useState(false);
+  const [isHeroDataLoaded, setHeroDataLoaded] = useState(false);
   const [isNextLvlPopUp, setNextLvlPopUp] = useState(false);
+  const awsUrl = 'https://5cohdjbvl4.execute-api.us-east-1.amazonaws.com/dev/'
 
   useEffect(() => {
-    const getPlayer = () => {
-      const url  = 'http://localhost:5000/heros/' + props.playerId;
+    const getHero = () => {
+      const url  = awsUrl + 'heros/' + props.heroId;
       axios.get(url)
-        .then(player => {
-          setPlayer(player.data);
-          setPlayerDataLoaded(true);
-          console.log("Player data is loaded from db")
+        .then(hero => {
+          setHero(hero.data)
+          setHeroDataLoaded(true)
+          console.log("Hero data is loaded from db")
         })
         .catch(err => {
           console.log('Error: ' + err);
         });
     }
     const getTasksList = () => {
-      const url  = 'http://localhost:5000/tasks/';
+      const url  = awsUrl + 'tasks/';
       axios.get(url)
         .then(tasks => {
-          setTasksList(tasks.data[0].tasksList)
+          setTasksList(tasks.data.tasksList)
           console.log("Tasks list is loaded from db")
         })
         .catch(err => {
@@ -57,10 +58,10 @@ const Game = (props) => {
         });
     }
     const getBribesList = () => {
-      const url  = 'http://localhost:5000/bribes/';
+      const url  = awsUrl + 'bribes/';
       axios.get(url)
         .then(bribes => {
-          setBribesList(bribes.data[0].bribesList)
+          setBribesList(bribes.data.bribesList)
           console.log("Bribes list is loaded from db")
         })
         .catch(err => {
@@ -68,10 +69,10 @@ const Game = (props) => {
         });
     }
     const getItemsList = () => {
-      const url  = 'http://localhost:5000/items/';
+      const url  = awsUrl + 'items/';
       axios.get(url)
         .then(items => {
-          setItemsList(items.data[0].itemsList)
+          setItemsList(items.data.itemsList)
           console.log("Items list is loaded from db")
         })
         .catch(err => {
@@ -79,10 +80,10 @@ const Game = (props) => {
         });
     }
     const getLvlsList = () => {
-      const url  = 'http://localhost:5000/lvls/';
+      const url  = awsUrl + 'lvls/';
       axios.get(url)
         .then(lvls => {
-          setLvlsList(lvls.data[0].lvlsList)
+          setLvlsList(lvls.data.lvlsList)
           console.log("Lvls list is loaded from db")
         })
         .catch(err => {
@@ -90,29 +91,29 @@ const Game = (props) => {
         });
     }
 
-    getPlayer();
+    getHero();
     getTasksList();
     getBribesList();
     getItemsList();
     getLvlsList();
-  }, [props.playerId]);
+  }, [props.heroId]);
 
-  const updatePlayer = React.useCallback((player) => {
+  const updateHero = React.useCallback((hero) => {
     let isLvlUp = false;
-    while(player.exp > player.expNextLvl) {
+    while(hero.exp > hero.expNextLvl) {
       isLvlUp = true;
-      player.lvl += 1;
-      player.exp -= player.expNextLvl;
-      player.expNextLvl = lvlsList[player.lvl];
-      player.prison.chance = player.lvl * 5;
+      hero.lvl += 1;
+      hero.exp -= hero.expNextLvl;
+      hero.expNextLvl = lvlsList[hero.lvl];
+      hero.prison.chance = hero.lvl * 5;
     }
 
-    const url  = 'http://localhost:5000/heros/update/' + player._id;
-    axios.post(url, player)
-      .then((player) => {
-        setPlayer(player.data)
+    const url  = 'https://5cohdjbvl4.execute-api.us-east-1.amazonaws.com/dev/heros/' + props.heroId;
+    axios.put(url, hero)
+      .then((hero) => {
+        setHero(hero.data)
         isLvlUp && setNextLvlPopUp(true);
-        console.log("Player data is uploaded to db")
+        console.log("Hero data is uploaded to db")
       })
       .catch(err => {
         console.log('Error: ' + err);
@@ -122,26 +123,26 @@ const Game = (props) => {
 
   const selectGamePage = () => {
     if (actualGamePageName==="Hero") {
-      return <Hero  player = {player}
-                    updatePlayer = {(player) => updatePlayer(player)}/>
-    } else if (actualGamePageName==="City" && !player.prison.isPrisoned) {
-      return <City  task={player.task}
-                    prisonChance = {player.prison.chance}
+      return <Hero  hero = {hero}
+                    updateHero = {(hero) => updateHero(hero)}/>
+    } else if (actualGamePageName==="City" && !hero.prison.isPrisoned) {
+      return <City  task={hero.task}
+                    prisonChance = {hero.prison.chance}
                     calculateTask = {() => calculateTask()}
                     remainingTaskDuration = {remainingTaskDuration}
                     startTask = {(task, id) => startTask(task, id)}/>
-    } else if (actualGamePageName==="Residence" && !player.prison.isPrisoned) {
+    } else if (actualGamePageName==="Residence" && !hero.prison.isPrisoned) {
       return <Residence />
-    } else if (actualGamePageName==="Bribes" && !player.prison.isPrisoned) {
-      return <Bribes  player = {player}
+    } else if (actualGamePageName==="Bribes" && !hero.prison.isPrisoned) {
+      return <Bribes  hero = {hero}
                       bribesList = {bribesList}
-                      updatePlayer = {(player) => updatePlayer(player)}
+                      updateHero = {(hero) => updateHero(hero)}
                       remainingBribeDuration = {remainingBribeDuration}/>
-    } else if (actualGamePageName==="Lab" && !player.prison.isPrisoned) {
+    } else if (actualGamePageName==="Lab" && !hero.prison.isPrisoned) {
       return <Lab />
-    } else if (actualGamePageName==="Warehouse" && !player.prison.isPrisoned) {
+    } else if (actualGamePageName==="Warehouse" && !hero.prison.isPrisoned) {
       return <Warehouse />
-    } else if (actualGamePageName==="Map" && !player.prison.isPrisoned) {
+    } else if (actualGamePageName==="Map" && !hero.prison.isPrisoned) {
       return <Map />
     } else if (actualGamePageName==="Socios") {
       return <Socios />
@@ -149,13 +150,13 @@ const Game = (props) => {
       return <Cartel />
     } else if (actualGamePageName==="MailBox") {
       return <MailBox />
-    } else if (actualGamePageName==="Shop" && !player.prison.isPrisoned) {
+    } else if (actualGamePageName==="Shop" && !hero.prison.isPrisoned) {
       return <Shop />
     } else {
       return <Prison  payAndGetOutPrison = {() => payAndGetOutPrison()}
                       isEnoughGoldToLeftPrison = {isEnoughGoldToLeftPrison()}
                       remainingPrisonDuration = {remainingPrisonDuration}
-                      prisonDuration = {player.prison.duration}
+                      prisonDuration = {hero.prison.duration}
                       costOfGettingOutOfPrison = {calculateCostOfGettingOutOfPrison()}/>
     }
   }
@@ -165,82 +166,82 @@ const Game = (props) => {
   const [CityAlert, setCityAlert] = useState('');
 
   const isTaskTimeElapsed = React.useCallback(() => {
-    if (player.task.isStarted) {
-      const endTime = player.task.endTime;
+    if (isHeroDataLoaded && hero.task.isStarted) {
+      const endTime = hero.task.endTime;
       const currentTime = new Date().getTime();
       const secondsToEnd = Math.round((endTime - currentTime)/1000);
       setRemainingTaskDuration(secondsToEnd);
       return endTime < currentTime
     }
     return false
-  }, [player])
+  }, [hero])
 
   const finishTask = React.useCallback(() => {
-    if(player.task.isStarted && !player.task.isFinished) {
+    if(hero.task.isStarted && !hero.task.isFinished) {
       console.log("Function finishTask")
-      let newPlayer = player;
-      newPlayer.task.isFinished = true;
+      let newHero = hero;
+      newHero.task.isFinished = true;
       setCityAlert('!!');
-      updatePlayer(newPlayer)
+      updateHero(newHero)
     }
-  }, [player, updatePlayer])
+  }, [hero, updateHero])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if(isTaskTimeElapsed())
+      if(isHeroDataLoaded && isTaskTimeElapsed())
         finishTask();
-      if(isPrisonTimeElapsed())
+      if(isHeroDataLoaded && isPrisonTimeElapsed())
         terminationOfPrisonSentence();
-      if(isBribeTimeElapsed())
+      if(isHeroDataLoaded && isBribeTimeElapsed())
         finishBribe();
     }, 1000);
     return () => clearInterval(interval);
-  }, [player, finishTask, isTaskTimeElapsed]);
+  }, [hero, finishTask, isTaskTimeElapsed, isHeroDataLoaded]);
 
   const startTask = (task, id) => {
     console.log("Function startTask");
     let date = new Date();
     let taskEndTime = new Date(date.getTime() + task.taskDuration[id]*1000).getTime();
-    let newPlayer = player;
+    let newHero = hero;
 
-    newPlayer.task.isStarted = true;
-    newPlayer.task.isFinished = false;
-    newPlayer.task.isCalculated = false;
-    newPlayer.task.endTime = taskEndTime;
-    newPlayer.task.taskDuration = task.taskDuration[id];
-    newPlayer.task.name = task.name[id];
-    newPlayer.task.description = task.description[id];
-    newPlayer.task.imgUrl = task.imgUrl[id];
-    newPlayer.task.gold = task.gold[id];
-    newPlayer.task.exp = task.exp[id];
-    updatePlayer(newPlayer);
+    newHero.task.isStarted = true;
+    newHero.task.isFinished = false;
+    newHero.task.isCalculated = false;
+    newHero.task.endTime = taskEndTime;
+    newHero.task.taskDuration = task.taskDuration[id];
+    newHero.task.name = task.name[id];
+    newHero.task.description = task.description[id];
+    newHero.task.imgUrl = task.imgUrl[id];
+    newHero.task.gold = task.gold[id];
+    newHero.task.exp = task.exp[id];
+    updateHero(newHero);
   }
 
   const calculateTask = () => {
     if(isTaskTimeElapsed()) {
       console.log("Function calculateTask")
       setCityAlert('');
-      let newPlayer = player;
+      let newHero = hero;
 
-      if (getRandomInt(1, 100) < player.prison.chance) {
+      if (getRandomInt(1, 100) < hero.prison.chance) {
         let date = new Date();
-        newPlayer.prison.isPrisoned = true
-        newPlayer.prison.exitPrisonTime = new Date(date.getTime() + player.prison.duration*1000).getTime()
+        newHero.prison.isPrisoned = true
+        newHero.prison.exitPrisonTime = new Date(date.getTime() + hero.prison.duration*1000).getTime()
       }
 
-      newPlayer.task.isStarted = false;
-      newPlayer.task.isFinished = false;
-      newPlayer.task.isCalculated = true;
+      newHero.task.isStarted = false;
+      newHero.task.isFinished = false;
+      newHero.task.isCalculated = true;
 
-      if(!newPlayer.prison.isPrisoned) {
-        Number.isInteger(newPlayer.task.gold) ?
-          newPlayer.gold = newPlayer.gold + newPlayer.task.gold :
-          newPlayer.gold = newPlayer.gold + 1;
-        Number.isInteger(newPlayer.task.exp) ?
-          newPlayer.exp = newPlayer.exp + newPlayer.task.exp :
-          newPlayer.exp = newPlayer.exp + 1;
-        if(newPlayer.task.item) {
-          addEquipmentToBackpack(newPlayer.task.item);
+      if(!newHero.prison.isPrisoned) {
+        Number.isInteger(newHero.task.gold) ?
+          newHero.gold = newHero.gold + newHero.task.gold :
+          newHero.gold = newHero.gold + 1;
+        Number.isInteger(newHero.task.exp) ?
+          newHero.exp = newHero.exp + newHero.task.exp :
+          newHero.exp = newHero.exp + 1;
+        if(newHero.task.item) {
+          addEquipmentToBackpack(newHero.task.item);
         }
       }
 
@@ -253,7 +254,7 @@ const Game = (props) => {
       let newImgUrl = []
       let newTaskDuration = []
       let random = 0;
-      let lvl = newPlayer.lvl + 1;
+      let lvl = newHero.lvl + 1;
       let idList = [0, 1, 2];
       for(var i of idList) {
         newName[i] = tasksList[drawedTaskIds[i]].name
@@ -265,18 +266,18 @@ const Game = (props) => {
         newExp[i] = Math.floor(tasksList[drawedTaskIds[i]].exp * lvl * (newTaskDuration[i] - random) / 30)
       }
       if(getRandomInt(1, 100) < 90) {
-        newPlayer.task.item = getNewItem(itemsList, lvl);
+        newHero.task.item = getNewItem(itemsList, lvl);
       } else {
-        newPlayer.task.item = {};
+        newHero.task.item = {};
       }
-      newPlayer.task.gold = newGold;
-      newPlayer.task.exp = newExp;
-      newPlayer.task.name = newName;
-      newPlayer.task.description = newDescription;
-      newPlayer.task.taskDuration = newTaskDuration;
-      newPlayer.task.imgUrl = newImgUrl;
+      newHero.task.gold = newGold;
+      newHero.task.exp = newExp;
+      newHero.task.name = newName;
+      newHero.task.description = newDescription;
+      newHero.task.taskDuration = newTaskDuration;
+      newHero.task.imgUrl = newImgUrl;
       setRemainingTaskDuration("undefined")
-      updatePlayer(newPlayer);
+      updateHero(newHero);
     }
   }
 
@@ -294,8 +295,8 @@ const Game = (props) => {
   }
 
   const addEquipmentToBackpack = (equipment) => {
-    if(player.backpack.length < 10) {
-      player.backpack.push(equipment);
+    if(hero.backpack.length < 10) {
+      hero.backpack.push(equipment);
     }
   }
   //City end
@@ -304,42 +305,42 @@ const Game = (props) => {
   const [remainingPrisonDuration, setRemainingPrisonDuration] = useState("undefined");
 
   const calculateCostOfGettingOutOfPrison = () => {
-    return player.lvl * 1
+    return hero.lvl * 1
   }
 
   const isEnoughGoldToLeftPrison = () => {
-    return player.gold >= calculateCostOfGettingOutOfPrison()
+    return hero.gold >= calculateCostOfGettingOutOfPrison()
   }
 
   const isPrisonTimeElapsed = React.useCallback(() => {
-    if (player.prison.isPrisoned) {
-      const endTime = player.prison.exitPrisonTime;
+    if (hero.prison.isPrisoned) {
+      const endTime = hero.prison.exitPrisonTime;
       const currentTime = new Date().getTime();
       const secondsToEnd = Math.round((endTime - currentTime)/1000);
       setRemainingPrisonDuration(secondsToEnd);
       return endTime < currentTime
     }
     return false
-  }, [player])
+  }, [hero])
 
   const terminationOfPrisonSentence = React.useCallback(() => {
-    if(player.prison.isPrisoned) {
+    if(hero.prison.isPrisoned) {
       console.log("Function terminationOfPrisonSentence")
-      let newPlayer = player
-      newPlayer.prison.isPrisoned = false
+      let newHero = hero
+      newHero.prison.isPrisoned = false
       setRemainingPrisonDuration("undefined")
-      updatePlayer(newPlayer)
+      updateHero(newHero)
     }
-  }, [player, updatePlayer])
+  }, [hero, updateHero])
 
   const payAndGetOutPrison = () => {
-    const newPlayer = player
+    const newHero = hero
     const costOfGettingOutOfPrison = calculateCostOfGettingOutOfPrison()
-    newPlayer.gold = newPlayer.gold - costOfGettingOutOfPrison
-    newPlayer.prison.isPrisoned = false
-    newPlayer.prison.exitPrisonTime = 1596743927075
+    newHero.gold = newHero.gold - costOfGettingOutOfPrison
+    newHero.prison.isPrisoned = false
+    newHero.prison.exitPrisonTime = 1596743927075
     setRemainingPrisonDuration("undefined")
-    updatePlayer(newPlayer)
+    updateHero(newHero)
   }
   //Prison end
 
@@ -347,30 +348,30 @@ const Game = (props) => {
   const [remainingBribeDuration, setRemainingBribeDuration] = useState("undefined");
 
   const isBribeTimeElapsed = React.useCallback(() => {
-    if (player.bribe.isPayed) {
-      const endTime = player.bribe.endTime;
+    if (hero.bribe.isPayed) {
+      const endTime = hero.bribe.endTime;
       const currentTime = new Date().getTime();
       const secondsToEnd = Math.round((endTime - currentTime)/1000);
       setRemainingBribeDuration(secondsToEnd);
       return endTime < currentTime
     }
     return false
-  }, [player])
+  }, [hero])
 
   const finishBribe = React.useCallback(() => {
-    if(player.bribe.isPayed) {
+    if(hero.bribe.isPayed) {
       console.log("Function finishBribe")
-      let newPlayer = player
-      newPlayer.bribe.isPayed = false
-      newPlayer.prison.chance += newPlayer.bribe.chanceReduction
+      let newHero = hero
+      newHero.bribe.isPayed = false
+      newHero.prison.chance += newHero.bribe.chanceReduction
       setRemainingBribeDuration("undefined")
-      updatePlayer(newPlayer)
+      updateHero(newHero)
     }
-  }, [player, updatePlayer])
+  }, [hero, updateHero])
   //Bribe end
 
   return (
-    isPlayerDataLoaded ?
+    isHeroDataLoaded ?
       <div  className="popupContainer"
             onClick={() => setNextLvlPopUp(false)}>
         <div className="gameContainer">
@@ -380,7 +381,7 @@ const Game = (props) => {
                       CityAlert={CityAlert}/>
           </div>
           <div className="GamePage">
-            <GameHeader player={player}/>
+            <GameHeader hero={hero}/>
             {selectGamePage()}
           </div>
         </div>
@@ -388,7 +389,7 @@ const Game = (props) => {
           <div className="popup">
             Gratulacje <br />
             Osiągnięto następny poziom! <br />
-            Aktualny poziom: {player.lvl}
+            Aktualny poziom: {hero.lvl}
           </div>
         )}
       </div> :

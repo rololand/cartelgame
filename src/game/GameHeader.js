@@ -8,25 +8,25 @@ const GameHeader = (props) => {
     <div>
       <div className="headerContainer">
         <div className="headerItem">
-          Nick: {props.player.username}
+          Nick: {props.hero.username}
         </div>
         <div className="headerItem">
-          Klasa: {props.player.category}
+          Klasa: {props.hero.category}
         </div>
         <div className="headerItem">
-          Złoto: {props.player.gold}
+          Złoto: {props.hero.gold}
         </div>
         <div className="headerItem">
-          Lvl: {props.player.lvl}
+          Lvl: {props.hero.lvl}
         </div>
       </div>
       <div  id="progressBarHeader"
             onMouseEnter={()=>setIsPopUp(true)}
             onMouseLeave={()=>setIsPopUp(false)}>
-        <ProgressBar value={props.player.exp} max={props.player.expNextLvl}/>
+        <ProgressBar value={props.hero.exp} max={props.hero.expNextLvl}/>
         {isPopUp && (
           <div id="progressBarHeaderInfo">
-            {props.player.exp} / {props.player.expNextLvl}
+            {props.hero.exp} / {props.hero.expNextLvl}
           </div>
         )}
       </div>

@@ -14,26 +14,26 @@ import AvatarCard from './AvatarCard.js';
 const Hero = (props) => {
 
   const claculatePointCost = (statName) => {
-    const statValue = props.player.stats[statName];
+    const statValue = props.hero.stats[statName];
     const pointCost = (statValue + 1) * 10;
 
     return pointCost
   }
 
   const isEnoughGoldToBuyStatsPoint = (statName) => {
-    const playerGold = props.player.gold;
+    const heroGold = props.hero.gold;
     const pointCost = claculatePointCost(statName);
 
-    return playerGold > pointCost
+    return heroGold > pointCost
   }
 
   const addStatsPoint = (statName) => {
-    const newPlayer = props.player;
+    const newHero = props.hero;
 
     if(isEnoughGoldToBuyStatsPoint(statName)) {
-      newPlayer.gold = newPlayer.gold - claculatePointCost(statName);
-      newPlayer.stats[statName] = newPlayer.stats[statName] + 1;
-      props.updatePlayer(newPlayer);
+      newHero.gold = newHero.gold - claculatePointCost(statName);
+      newHero.stats[statName] = newHero.stats[statName] + 1;
+      props.updateHero(newHero);
     }
   }
 
@@ -48,42 +48,42 @@ const Hero = (props) => {
   }
 
   const dressEquipment = (equipment, id) => {
-    const newPlayer = props.player;
+    const newHero = props.hero;
     const what = equipment.what;
-    if(newPlayer.equipment[what]) {
-      const newEquipent = newPlayer.backpack[id];
-      const newBackpack = newPlayer.equipment[what];
-      newPlayer.backpack[id] = newBackpack;
-      newPlayer.equipment[what] = newEquipent;
+    if(newHero.equipment[what]) {
+      const newEquipent = newHero.backpack[id];
+      const newBackpack = newHero.equipment[what];
+      newHero.backpack[id] = newBackpack;
+      newHero.equipment[what] = newEquipent;
     } else {
-      newPlayer.equipment[what] = equipment;
-      newPlayer.backpack = deleteElementId(props.player.backpack, id);
+      newHero.equipment[what] = equipment;
+      newHero.backpack = deleteElementId(props.hero.backpack, id);
     }
-    newPlayer.statsAllEquipments = getStatsAllEquipments(newPlayer.equipment);
-    props.updatePlayer(newPlayer);
+    newHero.statsAllEquipments = getStatsAllEquipments(newHero.equipment);
+    props.updateHero(newHero);
   }
 
   const undressEquipment = (equipment) => {
-    const newPlayer = props.player;
-    delete newPlayer.equipment[equipment.what];
-    if(props.player.backpack.length < 10) {
-      props.player.backpack.push(equipment);
+    const newHero = props.hero;
+    delete newHero.equipment[equipment.what];
+    if(props.hero.backpack.length < 10) {
+      props.hero.backpack.push(equipment);
     }
-    console.log(newPlayer);
-    newPlayer.statsAllEquipments = getStatsAllEquipments(newPlayer.equipment)
-    props.updatePlayer(newPlayer);
+    console.log(newHero);
+    newHero.statsAllEquipments = getStatsAllEquipments(newHero.equipment)
+    props.updateHero(newHero);
   }
 
   const sellEquipment = (equipment, id) => {
-    const newPlayer = props.player;
-    newPlayer.gold += equipment.price;
+    const newHero = props.hero;
+    newHero.gold += equipment.price;
     if(Number.isInteger(id)) {
-      newPlayer.backpack = deleteElementId(props.player.backpack, id);
+      newHero.backpack = deleteElementId(props.hero.backpack, id);
     } else {
-      delete newPlayer.equipment[equipment.what];
+      delete newHero.equipment[equipment.what];
     }
-    newPlayer.statsAllEquipments = getStatsAllEquipments(newPlayer.equipment)
-    props.updatePlayer(newPlayer);
+    newHero.statsAllEquipments = getStatsAllEquipments(newHero.equipment)
+    props.updateHero(newHero);
   }
 
   const getEquipmentCard = (equipment) => {
@@ -126,25 +126,25 @@ const Hero = (props) => {
         <div>
           <div className="row">
             <div>
-              {getEquipmentCard(props.player.equipment.head)}
-              {getEquipmentCard(props.player.equipment.body)}
-              {getEquipmentCard(props.player.equipment.legs)}
-              {getEquipmentCard(props.player.equipment.foots)}
+              {getEquipmentCard(props.hero.equipment.head)}
+              {getEquipmentCard(props.hero.equipment.body)}
+              {getEquipmentCard(props.hero.equipment.legs)}
+              {getEquipmentCard(props.hero.equipment.foots)}
             </div>
             <div>
-              <AvatarCard avatar={props.player.avatar} />
+              <AvatarCard avatar={props.hero.avatar} />
             </div>
             <div>
-              {getEquipmentCard(props.player.equipment.palms)}
-              {getEquipmentCard(props.player.equipment.finger)}
-              {getEquipmentCard(props.player.equipment.neck)}
-              {getEquipmentCard(props.player.equipment.amulet)}
+              {getEquipmentCard(props.hero.equipment.palms)}
+              {getEquipmentCard(props.hero.equipment.finger)}
+              {getEquipmentCard(props.hero.equipment.neck)}
+              {getEquipmentCard(props.hero.equipment.amulet)}
             </div>
           </div>
           <div className="row">
             <div className="row">
-              {getEquipmentCard(props.player.equipment.ammo)}
-              {getEquipmentCard(props.player.equipment.bullet)}
+              {getEquipmentCard(props.hero.equipment.ammo)}
+              {getEquipmentCard(props.hero.equipment.bullet)}
             </div>
             <div className="row">
               flakony
@@ -155,12 +155,12 @@ const Hero = (props) => {
         <div className="backpack row">
           <div>
           {i.map(i =>
-            getBackpackCard(props.player.backpack[i], i)
+            getBackpackCard(props.hero.backpack[i], i)
           )}
           </div>
           <div>
           {i.map(i =>
-            getBackpackCard(props.player.backpack[i+5], i+5)
+            getBackpackCard(props.hero.backpack[i+5], i+5)
           )}
           </div>
         </div>
@@ -172,7 +172,7 @@ const Hero = (props) => {
               statName !== "armor" && (
                 <div key={statsNamesPL[index]} className="row">
                   <div className="statsName">
-                    {statsNamesPL[index]}: {props.player.stats[statName]} + {props.player.statsAllEquipments[statName]}
+                    {statsNamesPL[index]}: {props.hero.stats[statName]} + {props.hero.statsAllEquipments[statName]}
                   </div>
                   <AddStatsButton onClick={(statName) => addStatsPoint(statName)}
                                   statName={statName}
@@ -187,7 +187,7 @@ const Hero = (props) => {
               statName !== "armor" && (
                 <div key={statsNamesPL[index+3]} className="row">
                   <div className="statsName">
-                    {statsNamesPL[index+3]}: {props.player.stats[statName]} + {props.player.statsAllEquipments[statName]}
+                    {statsNamesPL[index+3]}: {props.hero.stats[statName]} + {props.hero.statsAllEquipments[statName]}
                   </div>
                   <AddStatsButton onClick={(statName) => addStatsPoint(statName)}
                                   statName={statName}

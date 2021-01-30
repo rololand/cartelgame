@@ -18,13 +18,13 @@ const BribeCard = (props) => {
       Koszt: {props.bribeCost}<br />
       Czas trwania: {displayTime(props.bribeDuration)}<br />
       Redukuje szansę złapania do więzienia o: {props.chanceReduction}%<br />
-      {props.playerBribe.isPayed && props.playerBribe.id === props.id ?
+      {props.heroBribe.isPayed && props.heroBribe.id === props.id ?
         <div>
           {displayTime(remainingBribeDuration)} <br />
           <ProgressBar value={bribeElapsedTime}
                     max={props.bribeDuration} />
         </div> :
-        <button disabled={props.isEnoughGoldToPayBribe && !props.playerBribe.isPayed? false : true}
+        <button disabled={props.isEnoughGoldToPayBribe && !props.heroBribe.isPayed? false : true}
                 onClick={() => props.payBribe(props.id)}>
           Zapłać łapówkę!
         </button>}

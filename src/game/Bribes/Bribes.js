@@ -3,22 +3,22 @@ import BribeCard from './BribeCard.js'
 
 const Bribes = (props) => {
   const isEnoughGoldToPayBribe = (bribeCost) => {
-    return props.player.gold > bribeCost
+    return props.hero.gold > bribeCost
   }
 
   const payBribe = (bribeId) => {
-    const newPlayer = props.player
+    const newHero = props.hero
     if (isEnoughGoldToPayBribe(props.bribesList[bribeId].cost)) {
       console.log("pay bribe")
-      newPlayer.gold -= props.bribesList[bribeId].cost
-      newPlayer.prison.chance -= props.bribesList[bribeId].chanceReduction
-      newPlayer.bribe.isPayed = true
-      newPlayer.bribe.chanceReduction = props.bribesList[bribeId].chanceReduction
-      newPlayer.bribe.id = bribeId
+      newHero.gold -= props.bribesList[bribeId].cost
+      newHero.prison.chance -= props.bribesList[bribeId].chanceReduction
+      newHero.bribe.isPayed = true
+      newHero.bribe.chanceReduction = props.bribesList[bribeId].chanceReduction
+      newHero.bribe.id = bribeId
       const date = new Date();
-      newPlayer.bribe.endTime = new Date(date.getTime() + props.bribesList[bribeId].duration*1000).getTime()
-      console.log(newPlayer)
-      props.updatePlayer(newPlayer)
+      newHero.bribe.endTime = new Date(date.getTime() + props.bribesList[bribeId].duration*1000).getTime()
+      console.log(newHero)
+      props.updateHero(newHero)
     }
   }
 
@@ -34,7 +34,7 @@ const Bribes = (props) => {
                     isEnoughGoldToPayBribe = {isEnoughGoldToPayBribe(props.bribesList[id].cost)}
                     payBribe = {(id) => payBribe(id)}
                     id = {id}
-                    playerBribe = {props.player.bribe}
+                    heroBribe = {props.hero.bribe}
                     remainingBribeDuration = {props.remainingBribeDuration}
                     key = {id}/>
       )}
