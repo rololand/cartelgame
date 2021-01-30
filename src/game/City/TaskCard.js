@@ -4,7 +4,7 @@ import displayTime from './../../utils/displayTime.js';
 
 const TaskCard = (props) => {
   let id = props.id;
-  const url = 'http://localhost:3000/db/tasks/' + props.task.imgUrl[id];
+  const url = 'https://rololand.github.io/cartelgame/db/tasks/' + props.task.imgUrl[id];
   return (
     <div className="card">
       <img className="cardImg" src={url} alt={''}/><br />

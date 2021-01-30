@@ -3,7 +3,7 @@ import displayTime from './../../utils/displayTime';
 import ProgressBar from './../../utils/ProgressBar';
 
 const ExecuteTaskContainer = (props) => {
-  const url = 'http://localhost:3000/db/tasks/' + props.task.imgUrl;
+  const url = 'https://rololand.github.io/cartelgame/db/tasks/' + props.task.imgUrl;
   let remainingTaskDuration = props.remainingTaskDuration
   remainingTaskDuration = Number.isInteger(remainingTaskDuration) ?
                                   remainingTaskDuration :

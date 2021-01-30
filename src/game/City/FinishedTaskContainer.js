@@ -2,7 +2,7 @@ import React from 'react';
 import './FinishedTaskContainer.css';
 
 const FinishedTaskContainer = (props) => {
-  const url = 'http://localhost:3000/db/tasks/' + props.task.imgUrl;
+  const url = 'https://rololand.github.io/cartelgame/db/tasks/' + props.task.imgUrl;
 
   return (
     <div>

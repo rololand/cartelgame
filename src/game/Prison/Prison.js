@@ -4,7 +4,7 @@ import displayTime from './../../utils/displayTime';
 import ProgressBar from './../../utils/ProgressBar';
 
 const Prison = (props) => {
-  const url = 'http://localhost:3000/db/others/prison.jpg';
+  const url = 'https://rololand.github.io/cartelgame/db/others/prison.jpg';
   let remainingPrisonDuration = props.remainingPrisonDuration
   remainingPrisonDuration = Number.isInteger(remainingPrisonDuration) ?
                                   remainingPrisonDuration :

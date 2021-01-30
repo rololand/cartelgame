@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AvatarCard = (props) => {
-  const url = 'http://localhost:3000/db/avatars/' + props.avatar;
+  const url = 'https://rololand.github.io/cartelgame/db/avatars/' + props.avatar;
   return (
     <div>
       <img src={url} alt={''}/>

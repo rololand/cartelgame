@@ -5,7 +5,7 @@ import statsNamesEN from './../../utils/statsNamesEN.js';
 
 const EquipmentCard = (props) => {
   const [isPopUpStats, setIsPopUpStats] = useState(false);
-  const url = 'http://localhost:3000/db/items/' + props.equipment.imgUrl;
+  const url = 'https://rololand.github.io/cartelgame/db/items/' + props.equipment.imgUrl;
 
   return (
     <div  className="equipmentCard"

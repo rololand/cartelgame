@@ -4,7 +4,7 @@ import displayTime from './../../utils/displayTime';
 import ProgressBar from './../../utils/ProgressBar';
 
 const BribeCard = (props) => {
-  const imgUrl = 'http://localhost:3000/db/avatars/' + props.imgUrl
+  const imgUrl = 'https://rololand.github.io/cartelgame/db/avatars/' + props.imgUrl
   let remainingBribeDuration = props.remainingBribeDuration
   remainingBribeDuration = Number.isInteger(remainingBribeDuration) ?
                                   remainingBribeDuration :
